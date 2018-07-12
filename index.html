@@ -10,11 +10,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================
 -->
-
-<!doctype html>
-
-
-
 <!doctype html>
 <meta charset="utf-8">
 <head>
@@ -38,16 +33,16 @@ limitations under the License.
     <h2>Using a neural network for complementary color prediction</h2>
     <dt-byline></dt-byline>
     <h2>Abstract</h2>
-    <p>We explore visualization as a mean to help an user understand a training method of a Neural Network. By allowing him/her to interact with the neural network training procedure, changing parameters and viewing results on the fly. Most machine learning and neural network methods are opaque and hard to understand by the public in general. We explore this visualization as a way to teach the techniques and concepts around neural network model training, visually exposing the behaviour of the training algorithm. In this article we describe one particular exploration, using the problem of computing the complementary color of an RGB color, using a neural network to predict a complementary color given color/labels pairs as training input. An interactive visualization was built to help the user understand the training model parameters and the convergence of a neural network, through the visualization of the model results at each step.
+    <p>In this article we explore interactive data visualization as a mean to help users understand a training method of a Neural Network. The visualization let the users interact with the neural network training procedure, changing parameters and viewing results as they are shown on the browser. As most machine learning and neural network methods are opaque and hard to understand by the public in general, we explore this visualization as a way to teach the techniques and concepts around neural network model training, visually exposing the behaviour of the training algorithm to the users playing with the visualization. In this article we describe one particular exploration, using the problem of predicting the complementary color of a RGB color, implemented as a neural network model.
     </p>
     <h2>Motivation</h2>
     <p>
       <ul>
         <li>Machine Learning, Artificial Intelligence and Neural Networks techniques are being used in a broad spectrum of applications.</li>
-        <li>Some techniques are hard to understand, even for advance users <dt-cite key="lecun2015deep"></dt-cite>.</li>
+        <li>Some techniques are hard to understand, even for advanced users <dt-cite key="lecun2015deep"></dt-cite>.</li>
         <li>This has led to a push for novel forms of interaction that make it easier for a user, at different roles, to understand how solutions are reached.</li>
         <li>Visualization techniques have been successfully used to help understand large databases and complex processes.</li>
-        <li>We are investigating the possibilities of using visualization to explain machine learning techniques, providing a better understanding of how they function.</li>
+        <li>We are investigating the possibilities of using interactive visualizations to explain machine learning techniques, providing a better understanding of how they function.</li>
         <li>In this paper, we present an interactive visualization to show how neural networks work. We selected a simple and scalable problem, calculating complementary colors, and developed an interactive visualization that allows a user to explore the effects of changing some parameters and view the training process as it happens</li>
       </ul>
     </p>
@@ -69,7 +64,7 @@ limitations under the License.
     </p>
     <p>This case was developed with knowledgeable in mind but a layperson can also explore it, as it assumes little prior knowledge of Neural Networks.</p>
     <h2>The model</h2>
-    <p>To demonstrate a real neural network in action we selected the problem of predicting a complementary color <dt-cite key="wikipediaCC"></dt-cite> <dt-cite key="OxfordComplementaryColor"></dt-cite> from the RGB <dt-cite key="wikiRGBColorModel"></dt-cite> color space. The idea was adapted from a deeplearn.js (now Tensorflow.js core<dt-cite key="tensorflowjsCore"></dt-cite>) tutorial, called Complementary Color Prediction, developed by <a href="https://twitter.com/chizeng">Chi Zeng</a>, from Google. The original tutorial was developed in TypeScript but as the library was eventually deprecated, the code is not available anymore. Initially we've built a D3.js <dt-cite key="D3js"></dt-cite> visualization for the neural network output and corrected an small issue with activation units. Later, when deeplearn.js moved to tensorflow.js, we rewrote the whole application in JavaScript with tensorflow.js and built the demo described in this article.</p>
+    <p>To demonstrate a real neural network in action we selected the problem of predicting a complementary color <dt-cite key="wikipediaCC"></dt-cite> <dt-cite key="OxfordComplementaryColor"></dt-cite> from the RGB <dt-cite key="wikiRGBColorModel"></dt-cite> color space. The idea was adapted from a deeplearn.js (now Tensorflow.js core<dt-cite key="tensorflowjsCore"></dt-cite>) tutorial, called Complementary Color Prediction, developed by <a href="https://twitter.com/chizeng">Chi Zeng</a>, from Google. The original tutorial was developed in TypeScript <dt-cite key="typeScript"></dt-cite> but as the library was eventually deprecated, the code, apparently, is not available anymore. Initially we've built a D3.js <dt-cite key="D3js"></dt-cite> visualization for the neural network output and corrected an small issue with activation units. Later, when deeplearn.js moved to tensorflow.js, we rewrote the whole application in JavaScript with tensorflow.js and built the demo described in this article.</p>
     <h3>Why complementary colors?</h3>
     <p>The main reasons for choosing a model to predict complementary colors are:</p>
     <p>
@@ -100,11 +95,11 @@ limitations under the License.
       }
     </dt-code>
     <p>The labels are generated using an implementation of a complementary color algorithm based on an answer by Edd<dt-cite key="stackOverflowEdd"></dt-cite> in Stack Overflow. The full code is rather long and is available at our application repository in github <dt-cite key="RSmpGithub"></dt-cite>. The computeComplementaryColor function converts an RGB color input to HSL <dt-cite key="wikiHSLColorModel"></dt-cite>, compute the complementary color in this color space and converts the result back to RGB.</p>
-    <p>At each round the model runs for 10 epochs (epoch is another parameter that can be easily exposed to the application interface). After a user defined number of training rounds, the model is called to predict a set of test colors and the results can be visually compared, on the fly, with the reference RGB labels generated by the previous algorithm.</p>
+    <p>At each round the model runs for 10 epochs (epoch is another parameter that can be easily exposed to the application interface, but we decided to omit it in the first version). After a user defined number of training rounds, the model is called to predict a set of test colors and the results can be visually compared, on the fly, with the reference RGB labels generated by Edd's algorithm.</p>
     <p>The output of each training round is displayed on a color wheel using D3.js <dt-cite key="D3js"></dt-cite>, as shown in the figure below.</p>
     <p><img src="MPSshot.png" width="100%" height="100%"></p>
     <h3>Neural network architecture </h3>
-    <p>The neural network has an input layer for the RGB colors, 3 hidden fully connected layers with 64, 32 and 16 relu units, and an output layer, for the model prediction. The code below shows how the neural network was created.</p>
+    <p>The neural network has an input layer for the RGB colors, 3 hidden fully connected layers with 64, 32 and 16 relu units, respectively, and the output layer, for the model predictions. The code below shows how the neural network was created.</p>
     <dt-code block language="javascript">
       function modelInit() {
         //Add input layer
@@ -146,15 +141,15 @@ limitations under the License.
     <h2>Common Misconception</h2>
     <p>We found out that a common difficulty in understanding machine learning applications arise from a simple misconception about the very framework of a machine learning application. Most people look at the field through the lenses of a traditional application, where data is fed to an algorithm that produces an answer.</p>
     <p><img src="DataAlgorithmAnswer.png"></p>
-    <p>To understand machine learning applications, one must first understand how they come to life: a LARGE amount of data is fed to a training algorithm and it produces, as output, an instance of a prediction algorithm trained with the input data that was provided to the machine learning algorithm. This output can then take other data as input and produce predictions in accordance with the training process. There is NO guarantees that the predictions will be fully correct but they will, likely, be as good as possible.</p>
+    <p>To understand machine learning applications, one must first understand how they come to life: a LARGE amount of data is fed to a training algorithm and it produces, as output, an instance of a prediction algorithm trained with the input data that was provided to the machine learning algorithm. This output can then take data as input and produce predictions in accordance with the training process. There is NO guarantees that the predictions will be fully correct but they will, hopefully, be as good as possible.</p>
     <p><img src="DataMLAlgorithm.png"></p>
     <h2>An analogy for the layperson</h2>
-    <p>Suppose that you are given a card with a color at random and you must give back a card with a color too, it can be the same color or a different one.In the beginning, you have no training, the best you can do is to give back a card at random. Being a deterministic algorithm, everytime someone gives you a card with a color X, you will produce as a response, the same Y color. So if I give you red and you give me back a green card, next time I give you a red card you will give me back a green card again. At this juncture you will produce bogus answers, but answers you will produce!</p>
+    <p>Suppose that you are given a card with a color at random and you must give back a card with a color too, it can be the same color or a different one. In the beginning, as you have no training, the best you can do is to give back a card at random. Being a deterministic algorithm, everytime someone gives you a card with a color X, you will produce as a response, the same Y color. So if I give you red and you give me back a green card, next time I give you a red card you will give me back a green card again. At this juncture you will produce bogus answers, but answers you will produce!</p>
     <p>Now suppose that you are given set of n card pairs, with the correct input/output cards. You can then use these pairs to correct your card selections. But there is a catch, whenever you correct the predictions for one card (for example, blue is the correct answer to red), all the other predictions are affected in a way, they change a little bit. What you try to do then, is to minimize the error of the color pairs you got as input.</p>
-    <p>The idea is that, after this training and adjusting procedure, you may be able to make a good guess on color pairs you saw, and, hopefully, you will be able to make a good guess on the colors you never saw!</p>
-    <p>Now, you can adjust the color predictions in small baby steps, changing the output colors just a little bit (remember that when you change the answer for one color, all the other answers are slightly affected), while trying to improve the colors you know the answers to, or you can adjust the colors in big steps, changing your other predictions a lot. Or you can do something in between these two extremes.</p>
+    <p>The idea is that, after this training and adjusting procedure, you may be able to make good guesses on color pairs you saw, and, hopefully, you will be able to make good guesses on the colors you never saw!</p>
+    <p>Now, you can adjust the color predictions in small baby steps, changing the output colors just a little bit (remember that when you change the answer for one color, all the other answers are slightly affected), or you can adjust the colors in big steps, with a big effect on your other predictions. Or you can do something in between these two extremes.</p>
     <p>Every time you get a color pair list, you adjust the color predictions again. When will you stop this training process? Maybe you will stop after training for 1.000 rounds, or when your data has finished, or you will stop when the error in all the colors you saw is smaller than a certain value (meaning that you’re doing good predictions on this data). It is up to you.</p>
-    <p>If you are still following us, then you, hopefully, understood what were you doing with the color cards. We can now throw a bit of nomenclature:</p>
+    <p>If you are still following us, then you, likely, understood what were you doing with the color cards. We can now throw a bit of nomenclature:</p>
     <p>
       <ul>
         <li><b>Learning Rate</b>: Is the amount of change you make on each pass. Big changes correspond to high learning rate, small changes correspond to small learning rate. If the learning rate is too big, you may never be able to make good predictions. If the learning rate is too small, it may take very long to properly correct, and later predict, the color pairs.</li>
@@ -163,41 +158,41 @@ limitations under the License.
         <li><b>Cost Target</b>: The the minimum error that your overall card predictions must reach in order to stop the training.</li>
       </ul>
     </p>
-    <p>There are another concepts in neural network training, but the for above are the ones you will see at work in the interactive application.</p>
+    <p>There are another concepts in neural network training, but the four above are the ones you will see at work in the interactive application.</p>
 
 
-    <h2 id="demo">The demo</h2>
-    <p>The application you are going to see was based in one of the tutorials for the late deeplearn.js library (now <a href="https://js.tensorflow.org/">tensorflow.js, a javascript inception of TensorFlow<dt-cite key="tensorflow2015-whitepaper"></dt-cite></a>). That tutorial, called Complementary Color Prediction, was developed by <a href="https://twitter.com/chizeng">Chi Zeng</a>, from Google.</p>
-    <p>We created a D3 <dt-cite key="D3js"></dt-cite> visual interface for the CCP tutorial in typescript and later, when deeplearn.js moved to tensorflow.js, we rewrote the whole code and added a bit of interactivity to it.</p>
+    <h2 idu="demo">The demo</h2>
+    <p>The application we present is based on one of the tutorials for the late deeplearn.js library (now <a href="https://js.tensorflow.org/">tensorflow.js</a>, a javascript inception of TensorFlow<dt-cite key="tensorflow2015-whitepaper"></dt-cite> and a spinoff of deeplearn.js). That tutorial, called Complementary Color Prediction, was developed by <a href="https://twitter.com/chizeng">Chi Zeng</a>, from Google.</p>
+    <p>We developed a D3.js <dt-cite key="D3js"></dt-cite> visual interface for the CCP tutorial in typescript and later, when deeplearn.js moved to tensorflow.js, we rewrote the whole code in javascript and added a bit of interactivity on top of it.</p>
     <p><img src="MPStart.png" width="100%" height="100%"></p>
-    <p>In the figure above you can see the staring point of the demo. The inner ring of the display is a set of colors that we will use to predict its complementary colors <dt-cite key="OxfordComplementaryColor"></dt-cite><dt-cite key="wikipediaCC"></dt-cite>. In the middle ring you will find the computed complementary colors, for reference. In the outer ring you will find the model predicted complementary colors. In the beginning the outer ring is gray, as no color was predicted yet. When running, the outer ring will be updated with the model predicted colors, and you can compare the predictions with the computed colors in the middle ring.</p>
-    <p>You can play with the demo using the controls below:</p>
+    <p>In the figure above we show the starting stage of the demo. The inner ring of the display is a set of colors that we will use to predict its complementary colors <dt-cite key="OxfordComplementaryColor"></dt-cite><dt-cite key="wikipediaCC"></dt-cite>. In the middle ring we show the corresponding complementary colors, for reference and control. In the outer ring we display the model predicted complementary colors, for each color in the original color set (the inner ring). In the beginning the outer ring is gray, as no color was predicted yet. When running, the outer ring will be updated with the model predicted colors, and the user will be able to compare the predictions with the reference complementary colors in the middle ring.</p>
+    <p>It is possible to play with the demo using the controls below:</p>
     <p><img src="MPControls.png" width="100%" height="100%"></p>
-    <p>The five sliders on the right let you adjust the values for:</p>
+    <p>The five sliders on the right side let the user adjust the values for:</p>
     <ul>
-      <li><b>Learning Rate</b>: The learning rate of your training model. Smaller learning rates are the baby steps that may go in the right direction but will take longer to get to the right prediction, larger learning rates are big strides that may go to the right direction but miss the prediction altogether, by going beyond the expected solution.</li>
-      <li><b>Batch Size</b>: The amount of colors that will be used for training at each round, ranging from 1 to 128. There are drawbacks in small batches and big batches, it is up to the analyst to figure out the <em>best batch</em> size (pun intended).</li>
+      <li><b>Learning Rate</b>: The learning rate of the training model. Smaller learning rates are the baby steps that may go in the right direction but will take longer to get to the right prediction, larger learning rates are big strides that may go to the right direction but will likely miss the prediction altogether, by going beyond the expected solution.</li>
+      <li><b>Batch Size</b>: The amount of colors that will be used for training at each round, ranging from 1 to 128. There are drawbacks in small batches and big batches, it is up to the analyst to figure out the <em>best batch</em>.</li>
       <li><b>Render Interval</b>: The number of rounds between screen updates, ranging from 1 (updating every round) to 50.</li>
-      <li><b>Step Limit</b>: The number of rounds that the training will run, ranging from 25 to 10.0000. If the training reaches this limit it will stop and this slider will be in red, to show that a step limit was reached. If the step limit is too small, the predictions won't be that good (the outer ring colors won't match the middle ring colors).</li>
-      <li><b>Cost Target</b>: The cost target of the predictions, ranging from 0.00005 to 0.001. The training will stop when the cost of the predictions is smaller than the cost target, and the cost target slider will become red, as in the figure below. If the cost is too big, the training may not converge, if the cost is too high, the training may overfit (turning into a very good predictor withthe colors it has seen, but off the mark on the colors it hasn't seen).</li>
+      <li><b>Step Limit</b>: The number of rounds that the training will run, ranging from 25 to 10.000. If the training reaches this limit it will stop and this slider color will switch to red, to show that a step limit was reached. If the step limit is too small, the predictions won't be that good (the outer ring colors won't match the middle ring colors).</li>
+      <li><b>Cost Target</b>: The cost target of the predictions, ranging from 0.00005 to 0.001. The training will stop when the cost of the predictions is smaller than the cost target, and the cost target slider will become red in consequence, as shown in the figure below. If the cost is too big, the training may not converge, if the cost is too high, the training may overfit (becoming a very good predictor of the colors it has seen, but off the mark on the colors it hasn't seen).</li>
     </ul>
     <p><img src="MPControlsCostTarget.png" width="100%" height="100%"></p>
-    <p>In the beginning you can adjust any of the five slides, choosing whatever combination you like. To start to play, click on the start button and watch the colors on the outer ring change, as the training goes on. Each new update shows the predictions of the algorithm to the complementary colors at that stage of the training, and you can compare them with the middle ring. When the training is running, the Start button becomes a red Stop button, as shown in the figure below.</p>
+    <p>In the beginning the user can adjust any of the five sliders, choosing whatever combination he/she like. The user has to click on the start button to start the training. The colors on the outer ring will change, as the training goes on. Each new update shows the predictions of the neural network algorithm for the complementary colors at that stage of the training. The use can compare the results with the colors in the middle ring. When the training is running, the Start button becomes a red Stop button, as shown in the figure below. The user can click on the stop button to halt the model training.</p>
     <p><img src="MPControlsRunning.png" width="100%" height="100%"></p>
-    <p>After the train starts, you won't be able to change neither the Learning Rate nor the Batch Size, so choose them wisely. The training may stop for three reasons:</p>
+    <p>After the train starts, the user won't be able to change neither the Learning Rate nor the Batch Size, so these parameter must be wisely choosen. The training may stop for three reasons:</p>
     <ol>
-      <li>You clicked on <em>Stop</em>.</li>
+      <li>The user clicked on <em>Stop</em>.</li>
       <li>The <em>Step Limit</em> was reached.</li>
       <li>The <em>Cost Target</em> was reached.</li>
     </ol>
-    <p>If you stopped the training, you can restart it by clicking on start again. If the <em>Step Limit</em> was reached, you can <b>increase</b> the limit and restart the training. If the <em>Cost Target</em> was reached, you can <b>decrease</b> the target and start again. Whenever the training is halted, you can reset it by clicking on the <em>Reset</em> button (notice that the button is disabled when the training is on). A reset will clear all the training (meaning that the model will "forget" the predictions), but will keep the values you chose for the training, for an initial training round. This way you can fine tune the training and explore the impact of each parameter change.</p>
-    <p>Notice that the initial parameters are not optimal, so you must play with them a little bit before finding a good balance. Try different combinations, play with it and, with luck, you will have some insights on how these parameters influence the training and the model predictions. One important thing to notice about machine learning training is that there is a random effect going on. You will see it in action by running the model with the same parameters more then once, you will not get the same results twice! So what are you doing here ? <a href="#MLPlay">Let's play</a>!</p>
+    <p>If the training was manually halted, then the user can restart it by clicking on start again. If the <em>Step Limit</em> was reached, the user can <b>increase</b> the step limit, if possible, and restart the training. If the <em>Cost Target</em> was reached, the user can <b>decrease</b> the cost target, if possible, and restart the training. Whenever the training is halted, the user can Reset it by clicking on the <em>Reset</em> button (notice that the button is disabled when the training is running). A reset will clear all the training data (meaning that the model will "forget" the predictions made so far), but will keep the values chosen for the training session. This way the user can incrementally fine tune the training and explore the impact of each parameter change.</p>
+    <p>Notice that the initial parameters are not optimal, so the user must play with them a little bit before finding out a good workable combination of parameter input. The user is encouraged to try different combinations, play with them and, with luck,  acquire some insights on how these parameters influence the training and the model predictions. One important thing to notice about machine learning training is that there is a random effect going on. The user will see it in action by running the model with the same parameters more then once. He/She won't get the same results twice! The demo the be found at the <a href="#MLPlay">end of the article.</a></p>
   </dt-article>
 
   <dt-appendix>
     <h3>Apendix</h3>
     <h4>Acknowledgements</h4>
-    <p>First and foremost we would like to thank the TensorFlowJS team, this is an amazing library that opens new doors to machine learning explorations on the browser. The code base can be found <a href="https://github.com/tensorflow/tfjs">here</a>. A special thanks goes to <a href="https://twitter.com/chizeng">Chi Zeng</a>, whose code inspired this application.</p> 
+    <p>First and foremost we would like to thank the TensorFlowJS team, this is an amazing library that opens new doors to machine learning explorations on the browser. Tensorflow.js code base can be found <a href="https://github.com/tensorflow/tfjs">here</a>. A special thanks goes to <a href="https://twitter.com/chizeng">Chi Zeng</a>, whose code inspired this application.</p> 
   </dt-appendix>
 
   <script type="text/bibliography">
@@ -305,7 +300,7 @@ limitations under the License.
     }
     @misc{typeScript,
       title={TypeScript - JavaScript that scales},
-      author={{Microsoft Corporation}},
+      author={{Microsoft}},
       year={2018},
       howpublished={\url{https://www.typescriptlang.org/}},
       url={https://www.typescriptlang.org/}
