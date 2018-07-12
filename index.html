@@ -35,23 +35,25 @@ limitations under the License.
 
   <dt-article>
     <h1>ML - Your mileage may vary</h1>
-    <h2>Explaining machine learning concepts through an interactive application<dt-fn>Or "Why my results are different?"</dt-fn></h2>
+    <h2>Explaining machine learning concepts through an interactive application</h2>
     <dt-byline></dt-byline>
     <p><h1 id="TLDR">TL;DR</h1></p>
-    <p>There are lots of myths about machine learning but we believe that the best way to understand machine learning concepts is by playing with real, or quasi real, machine learning applications. We've build an interactive web application where you can train a deep learning model, change its parameters, see it converge (or not!), start over and play as much as you want with the different parameters. Hopefully you will develop some insights about machine learning after playing with the application. By the way, the parameters are a bit off to start with, so it is up to you to improve them! Before you delve into the demo, notice that the algorithm is trying to predict the complementary colors of a given color. There is an explanation of the visuals <em>here</em>, but we are sure you will bet able to get it as you play. <a href="#MLPlay">Let's play</a></p>
+    <p>There are lots of myths about machine learning but we believe that the best way to understand machine learning concepts is by playing with real, or quasi real, machine learning applications. In this post we describe, and show you, an interactive web application where you can train a deep learning model, change its parameters, see it converge (or not!), start over and play as much as you want with some of the model parameters. Hopefully you will develop some insights about machine learning after playing with the application. By the way, the parameters of the demo are a bit off to start with, so it is up to you to improve them! Before you delve into the demo, notice that the algorithm is trying to predict the complementary colors of a given color. There is an explanation of the visuals <em><a href="#demo">here</a></em>, but we are sure that you will bet able to get it as you play along. <a href="#MLPlay">Let's play</a></p>
     <h2>The not so long road...</h2>
-    <p>On a conversation with a longtime friend a couple of months ago I had to answer the perennial question: "What are you doing these days?". This wouldn't be much of a conversation topic a few years back, when I was deeply entrenched in the Enterprise Content Management industry. My friend would shrug and the conversation would move on to another, hopefully interesting, topic. But these days, I'm doing Data Visualization in Machine Learning. More specifically, visual explanations for deep learning neural networks. To my friend this was a mouthful, but an interesting one.
-    </p>
+    <p>On a conversation with a longtime friend a couple of months ago I had to answer the perennial question: "What are you doing these days?". This wouldn't be much of a conversation topic a few years back, when I was deeply entrenched in the Enterprise Content Management industry. My friend would shrug and the conversation would move on to another, hopefully interesting, topic. But these days, I'm doing Data Visualization in Machine Learning. More specifically, visual explanations for deep learning neural networks. To my friend this was a mouthful, but an interesting one.</p>
     <p>It struck me, during this conversation, that my friend didn't really understood what machine learning is about. There is a large spectrum of myths surrounding artificial intelligence, some stemming from news about its most recent achievements, but a good fraction of these myths come almost verbatim from the pages of Clifford Simak <dt-cite key="simak1977skirmish"></dt-cite> and Mary Shelley <dt-cite key="shelley2009frankenstein"></dt-cite>, or worse, from the movie pictures based on Mary Shelley's classic story.</p>
     <p>We found out that a common difficulty in understanding machine learning applications arise from a simple misconception about the very framework of a machine learning application. Most people look at the field through the lenses of a traditional application, where data is fed to an algorithm that produces an answer.</p>
     <p><img src="DataAlgorithmAnswer.png"></p>
-    <p>To grok machine learning applications you must understand how machine learning applications <em>come to life</em> in the first place: you feed a <b>BIG</b> amount of data to a Machine Learning Training algorithm and it produces an algorithm for you. The result is the very algorithm that will later take data a produce an answer for you.</p>
+    <p>To grok machine learning applications you must understand how they <em>come to life</em> in the first place: you feed a <b>BIG</b> amount of data to a Machine Learning training algorithm and it produces, as output, an algorithm for you. This output is the very algorithm that will later take data as input and produce an answer for you.</p>
     <p><img src="DataMLAlgorithm.png"></p>
-    <p>We realized that explaining neural networks with the concept of the McCulloch/Pitts <dt-cite key="mcculloch1943logical"></dt-cite> neuron would lead us directly to the <a href="#TLDR">TL;DR highway</a>.</p>
-    <p>But then again, what is Machine Learning <em>Training</em>? Training is a method of using the existing data to produce answers to the problem we are working with. Suppose that you are at the bottom of an empty pool.</p>
+    <p>We realized that if we tried to explain neural networks from the ground up, starting with the concept of the McCulloch/Pitts <dt-cite key="mcculloch1943logical"></dt-cite> neuron, would lead us directly to the <a href="#TLDR">TL;DR highway</a>.</p>
+    <p><img src="mcpitts.png"></p>
+    <p>But if you don't explait machine learning from ground up, then how do you explaint it at all? We start with an analogy to machine learning training  and then let you play with a machine learning training algorithm, to better understand how it works..</p>
+    <h2>The analogy</h2>
+    <p>Suppose that you are at the bottom of an empty pool.</p>
     <p><img src="pool.jpg"></p>
     <p>The pool above has water in it, but you got the gist of it. Now, suppose that each tile of the pool is connected to another tile, but you don't know how the tiles are connected! At this juncture, if someone asks you what tile is connected to tile <b><em>X</em></b>, for example, the best you can do is move around randomly in the pool and stop over a particular <b><em>Y</em></b> tile. As you are an algorithm with a bit of responsability, if someone asks you again about the same <b><em>X</em></b> tile, you will produce the same <b><em>Y</em></b> answer. For every tile in the pool, you can walk to another corresponding tile but, as you are a machine learning algorithm without training, you will produce bogus answers, but answers you will produce!</p>
-    <p>Now suppose that you are given set of <b><em>n</em></b> tiles pairs. You can then use these pairs to correct your routes. You try every one of the tiles you've got and you will adjust all your routes at the same time (you cannot change just one route, any change you make affect all your routes!), trying to minimize the error in the tile pairs youve got. The idea is that if you can make a correct guess on the tiles you saw, there is a chance that you will be able to make a correct guess on the tiles you never saw! Now, you can adjust the routes in baby steps, changing the routes just a little bit, while trying to improve the routes you know are right, or you can adjust the routs in big steps, changing your routes a lot, or you can do something in between these two extremes. Now, when will you stop training? Maybe you will stop after training for 1.000 rounds, or you will stop when the error in the routes you got is smaller then a certain value.</p>
+    <p>Now suppose that you are given set of <b><em>n</em></b> tiles pairs. You can then use these pairs to correct your routes. You try every one of the tiles you've got and you will adjust all your routes at the same time (you cannot change just one route, any change you make affect all your routes!), trying to minimize the error in the tile pairs you've got as input. The idea is that if you can make a good guess on the tiles you saw, there is a chance that you will be able to make a good guess on the tiles you never saw! Now, you can adjust the routes in baby steps, changing the routes just a little bit, while trying to improve the routes you know the answers to, or you can adjust the routes in big steps, changing your routes a lot, or you can do something in between these two extremes. Every time you get a tile list, you adjust the routes again, but when will you stop this training process? Maybe you will stop after training for 1.000 rounds, when your data has finished, or you will stop when the error in the routes you got is smaller then a certain value. It is up to you.</p>
     <p>If you are still following us, then you, hopefully, understood what were you doing inside the pool. We can now throw a bit of nomenclature:</p>
     <ul>
       <li><b>Learning Rate</b>: Is the amount of change you make on each pass. Big changes correspond to high learning rate, small changes correspond to small learning rate. If the learning rate is too big, you may never be able to correct the routes. If the learning rate is too small, it may take very long to properly correct the routes.</li>
@@ -59,27 +61,39 @@ limitations under the License.
       <li><b>Step Limit</b>: Is the maximum amount of rounds of training that you will go through.</li>
       <li><b>Cost Limit</b>: Is the minimum error that your routes must have in order to stop the training.</li>
     </ul>
-    <p>There are another concepts in neural network training, but the for above are the ones you will see at work in the interactive application.
-    <center><img src="MPStart.png" width="50%" height="50%"></center>
-    <dt-code block language="javascript">
-      var x = 25;
-      function(x){
-        return x * x;
-      }
-    </dt-code>
-    
-    <p>We can also cite <dt-cite key="gregor2015draw"></dt-cite> external publications.</p>
-    <p><a href="#MLPlay">Let's play</a></p>
+    <p>There are another concepts in neural network training, but the for above are the ones you will see at work in the interactive application.</p>
+    <h2 id="demo">The demo</h2>
+    <p>The application you are going to see was based in one of the tutorials for the late deeplearn.js library (now <a href="https://js.tensorflow.org/">tensorflow.js, a javascript inception of TensorFlow<dt-cite key="tensorflow2015-whitepaper"></dt-cite></a>). That tutorial, called Complementary Color Prediction, was developed by <a href="https://twitter.com/chizeng">Chi Zeng</a>, from Google.</p>
+    <p>We created a D3 visual interface for the CCP tutorial in typescript and later, when deeplearn.js moved to tensorflow.js, we rewrote the whole code and added a bit of interactivity to it.</p>
+    <p><img src="MPStart.png" width="100%" height="100%"></p>
+    <p>In the figure above you can see the staring point of the demo. The inner ring of the display is a set of colors that we will use to predict its complementary colors <dt-cite key="wikipediaCC"></dt-cite>. In the middle ring you will find the computed complementary colors, for reference. In the outer ring you will find the model predicted complementary colors. In the beginning the outer ring is gray, as no color was predicted yet. When running, the outer ring will be updated with the model predicted colors, and you can compare the predictions with the computed colors in the middle ring.</p>
+    <p>You can play with the demo using the controls below:</p>
+    <p><img src="MPControls.png" width="100%" height="100%"></p>
+    <p>The five sliders on the right let you adjust the values for:</p>
+    <ul>
+      <li><b>Learning Rate</b>: The learning rate of your training model. Smaller learning rates are the baby steps that may go in the right direction but will take longer to get to the right prediction, larger learning rates are big strides that may go to the right direction but miss the prediction altogether, by going beyond the expected solution.</li>
+      <li><b>Batch Size</b>: The amount of colors that will be used for training at each round, ranging from 1 to 128. There are drawbacks in small batches and big batches, it is up to the analyst to figure out the <em>best batch</em> size (pun intended).</li>
+      <li><b>Render Interval</b>: The number of rounds between screen updates, ranging from 1 (updating every round) to 50.</li>
+      <li><b>Step Limit</b>: The number of rounds that the training will run, ranging from 25 to 10.0000. If the training reaches this limit it will stop and this slider will be in red, to show that a step limit was reached. If the step limit is too small, the predictions won't be that good (the outer ring colors won't match the middle ring colors).</li>
+      <li><b>Cost Target</b>: The cost target of the predictions, ranging from 0.00005 to 0.001. The training will stop when the cost of the predictions is smaller than the cost target, and the cost target slider will become red, as in the figure below. If the cost is too big, the training may not converge, if the cost is too high, the training may overfit (turning into a very good predictor withthe colors it has seen, but off the mark on the colors it hasn't seen).</li>
+    </ul>
+    <p><img src="MPControlsCostTarget.png" width="100%" height="100%"></p>
+    <p>In the beginning you can adjust any of the five slides, choosing whatever combination you like. To start to play, click on the start button and watch the colors on the outer ring change, as the training goes on. Each new update shows the predictions of the algorithm to the complementary colors at that stage of the training, and you can compare them with the middle ring. When the training is running, the Start button becomes a red Stop button, as shown in the figure below.</p>
+    <p><img src="MPControlsRunning.png" width="100%" height="100%"></p>
+    <p>After the train starts, you won't be able to change neither the Learning Rate nor the Batch Size, so choose them wisely. The training may stop for three reasons:</p>
+    <ol>
+      <li>You clicked on <em>Stop</em>.</li>
+      <li>The <em>Step Limit</em> was reached.</li>
+      <li>The <em>Cost Target</em> was reached.</li>
+    </ol>
+    <p>If you stopped the training, you can restart it by clicking on start again. If the <em>Step Limit</em> was reached, you can <b>increase</b> the limit and restart the training. If the <em>Cost Target</em> was reached, you can <b>decrease</b> the target and start again. Whenever the training is halted, you can reset it by clicking on the <em>Reset</em> button (notice that the button is disabled when the training is on). A reset will clear all the training (meaning that the model will "forget" the predictions), but will keep the values you chose for the training, for an initial training round. This way you can fine tune the training and explore the impact of each parameter change.</p>
+    <p>Notice that the initial parameters are not optimal, so you must play with them a little bit before finding a good balance. Try different combinations, play with it and, with luck, you will have some insights on how these parameters influence the training and the model predictions. One important thing to notice about machine learning training is that there is a random effect going on. You will see it in action by running the model with the same parameters more then once, you will not get the same results twice! So what are you doing here ? <a href="#MLPlay">Let's play</a>!</p>
   </dt-article>
 
   <dt-appendix>
     <h3>Apendix</h3>
-        <dt-code block language="javascript">
-      var x = 25;
-      function(x){
-        return x * x;
-      }
-    </dt-code>
+    <h4>Acknowledgements</h4>
+    <p>First and foremost we would like to thank the TensorFlowJS team, this is an amazing library that opens new doors to machine learning explorations on the browser. The code base can be found <a href="https://github.com/tensorflow/tfjs">here</a>. A special thanks goes to <a href="https://twitter.com/chizeng">Chi Zeng</a>, whose code inspired this application.</p> 
   </dt-appendix>
 
   <script type="text/bibliography">
@@ -111,6 +125,60 @@ limitations under the License.
       author={Simak, Clifford D},
       year={1977},
       publisher={Putnam}
+    }
+    @misc{wikipediaCC,
+      title={Complementary Colors},
+      author={Wikipedia},
+      year={2018},
+      howpublished={\url{https://en.wikipedia.org/wiki/Color_scheme#Complementary_colors}},
+      url={https://en.wikipedia.org/wiki/Color_scheme#Complementary_colors}
+    }
+    @misc{tensorflow2015-whitepaper,
+    title={ {TensorFlow}: Large-Scale Machine Learning on Heterogeneous Systems},
+    url={https://www.tensorflow.org/},
+    note={Software available from tensorflow.org},
+    author={
+        Mart\'{\i}n~Abadi and
+        Ashish~Agarwal and
+        Paul~Barham and
+        Eugene~Brevdo and
+        Zhifeng~Chen and
+        Craig~Citro and
+        Greg~S.~Corrado and
+        Andy~Davis and
+        Jeffrey~Dean and
+        Matthieu~Devin and
+        Sanjay~Ghemawat and
+        Ian~Goodfellow and
+        Andrew~Harp and
+        Geoffrey~Irving and
+        Michael~Isard and
+        Yangqing Jia and
+        Rafal~Jozefowicz and
+        Lukasz~Kaiser and
+        Manjunath~Kudlur and
+        Josh~Levenberg and
+        Dandelion~Man\'{e} and
+        Rajat~Monga and
+        Sherry~Moore and
+        Derek~Murray and
+        Chris~Olah and
+        Mike~Schuster and
+        Jonathon~Shlens and
+        Benoit~Steiner and
+        Ilya~Sutskever and
+        Kunal~Talwar and
+        Paul~Tucker and
+        Vincent~Vanhoucke and
+        Vijay~Vasudevan and
+        Fernanda~Vi\'{e}gas and
+        Oriol~Vinyals and
+        Pete~Warden and
+        Martin~Wattenberg and
+        Martin~Wicke and
+        Yuan~Yu and
+        Xiaoqiang~Zheng},
+      year={2015},
     }
   </script>
   <div style="overflow-x:auto;" id="MLPlay">
