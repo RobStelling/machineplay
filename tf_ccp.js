@@ -541,7 +541,7 @@ function initializeUi() {
     x: 425, y: -130,
     dy: -160, dx: 55
   },{
-    note: { label: "Generated colors (RGB)"},
+    note: { label: "Predicted colors (RGB)"},
     x: 438, y: -328,
     dy: -80, dx: 65
   }];
