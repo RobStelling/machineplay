@@ -546,7 +546,7 @@ function initializeUi() {
   const annotations = [{
     note: { label: "Original colors (RGB)"},
     x: 272, y: -212,
-    dy: -235, dx: 105
+    dy: -235, dx: 95
   },{
     note: { label: "Computed complementary colors (RGB)"},
     x: 425, y: -130,
@@ -554,7 +554,7 @@ function initializeUi() {
   },{
     note: { label: "Predicted colors (RGB)"},
     x: 438, y: -328,
-    dy: -80, dx: 65
+    dy: -80, dx: 45
   }];
 
   const makeAnnotations = d3.annotation().annotations(annotations);
