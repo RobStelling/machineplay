@@ -595,7 +595,7 @@ function switchStartStop() {
       d3.select("#cost_range").classed("finish", false);
     }
     document.getElementById("update").disabled = true;
-    trainAndMaybeRender();
+    requestAnimationFrame(trainAndMaybeRender);
   } else
       document.getElementById("update").disabled = false;
 }
