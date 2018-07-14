@@ -61,7 +61,7 @@ function initValues() {
   learningRate = 42e-2;
   batchSize = 10;
   runsb4rendering = 5;
-  epochs = 2;
+  epochs = 10;
   stepLimit = 1000;
   costTarget = 5e-4;
   forbiddenColors = new Set();
@@ -674,7 +674,7 @@ function setInterfaceHooks() {
     learningOutput.innerHTML = this.value;
     learningRate = +this.value;
   };
-  // Epochs slider
+  // Batch size slider
   var batchSlider = document.getElementById("batch_range");
   var batchOuput = document.getElementById("batch_val");
   batchSlider.value = batchOuput.innerHTML = batchSize;
