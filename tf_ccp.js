@@ -18,6 +18,7 @@
  /*
   * Based on the complementary color prediction demo from deeplearn.js
   * Recreated on top of tensorflow.js with D3.js visuals
+  *
   */
 
 /*
@@ -29,7 +30,7 @@
  * stepLimit
  * costTarget
  *
- * noTrain and noUpdate can be used to stop/restarting training and
+ * noTrain and noUpdate can be used to stop/restart training and
  * stop rendering screen updates
  */
 var learningRate,
@@ -149,7 +150,6 @@ function color2tensor(color) {
 
 // Converts an array[3] colors to an integer with 24 bits
 // Assumes color is well behaved ([0-255, 0-255, 0-255])
-// Converts [0-255, 0-255, 0-255] to 24bits integer
 function squashColor(color){
   return color[0]<<16 | color[1]<<8 | color[2];
 }
@@ -171,12 +171,13 @@ function generateData(count) {
     if (!forbiddenColors.has(squashColor(rawInput[i]))) {
       rawLabels[i] = normalizeColor(computeComplementaryColor(rawInput[i]));
       rawInput[i] = normalizeColor(rawInput[i]);
-    } else
+    } else 
       i--;
   }
   return [rawInput, rawLabels];
 }
 
+// Generates the sharp code of a color (Ex: #0FAB10)
 // color: number[3]
 function sharpRGBColor(color) {
   color = [...Array(color.length).keys()].map(v => Math.round(color[v]));
@@ -213,6 +214,7 @@ function updateUI() {
     return denormalizeColor(normalizedColor);
   }
 
+  // Single color 'cost'
   function colorCost(prediction, label) {
     // Prediction and label are RGB colors, use loss(tensor, tensor) to calculate single
     // color loss
@@ -315,6 +317,7 @@ function loss(predictions, labels) {
   });
 }
 
+// Trains one batch
 async function train1Batch() {
   // Reduce the learning rate by 85% every 42 steps
   //currentLearningRate = initialLearningRate * Math.pow(0.85, Math.floor(step/42));
@@ -382,6 +385,7 @@ async function trainAndMaybeRender() {
   updateUI();
 }
 
+// Populates hidden table container with a RGB color
 // container: HTMLElement
 // r: number (0-255)
 // g: number (0-255)
@@ -397,6 +401,7 @@ function populateContainerWithColor(
   container.appendChild(colorBox);
 }
 
+// Initialize graphical Interface
 function initializeUi() {
   // testColors will record the colors in the table,
   // to be lter used in the inner color doughnut
@@ -541,6 +546,7 @@ function initializeUi() {
   }
 }
 
+// Called when user clicks on Start/Stop button
 function switchStartStop() {
   const startStopTrigger = document.getElementById("trigger");
   noTrain = !noTrain;
@@ -557,6 +563,7 @@ function switchStartStop() {
       document.getElementById("update").disabled = false;
 }
 
+// Actually starts the network training, when button is in Start mode
 function startIt() {
   //document.getElementById("trigger").disabled = true;
   //document.getElementById("learning_range").disabled = true;
@@ -578,11 +585,11 @@ function startIt() {
   setTimeout(function(){requestAnimationFrame(trainAndMaybeRender);}, 1000);
 }
 
+// Model layers
 function modelInit() {
   //Add input layer
   // First layer must have an input shape defined.
   model.add(tf.layers.dense({units: 3,
-                            activation: 'tanh',
                             inputShape: [3]}));
   // Afterwards, TF.js does automatic shape inference.
   model.add(tf.layers.dense({units: 64,
@@ -597,11 +604,11 @@ function modelInit() {
                              activation: 'relu'
                            }));
   // Afterwards, TF.js does automatic shape inference.
-  model.add(tf.layers.dense({units: 3,
-                             activation: 'tanh'
+  model.add(tf.layers.dense({units: 3
                            }));
 }
 
+// Variables that are reset at every rerun
 function varReset() {
   step = 0;
   cost = +Infinity;
@@ -612,6 +619,7 @@ function varReset() {
   startTrainingTime = null;
 }
 
+// Reset environment before reruning
 function resetEnvironment() {
   tf.disposeVariables();
   varReset();
@@ -649,6 +657,7 @@ function resetEnvironment() {
   trigger.addEventListener("click", startIt, true);
 }
 
+// Initial values, not reset at reruns
 function initValues() {
   learningRate = 42e-2;
   batchSize = 10;
@@ -660,6 +669,7 @@ function initValues() {
   varReset();
 }
 
+// Set interface hooks before starting
 function setInterfaceHooks() {
   // Start button
   document.getElementById("trigger")
@@ -702,6 +712,10 @@ function setInterfaceHooks() {
   stepSlider.oninput = function() {
     stepOuput.innerHTML = this.value;
     stepLimit = +this.value;
+    if (stepLimit <= step)
+      d3.select("#step_range").classed("finish", true);
+    else
+      d3.select("#step_range").classed("finish", false);
   };
   // Cost target slider
   var costSlider = document.getElementById("cost_range");
@@ -711,9 +725,14 @@ function setInterfaceHooks() {
   costSlider.oninput = function() {
     costOuput.innerHTML = this.value;
     costTarget = +this.value;
+    if (costTarget >= cost)
+      d3.select("#cost_range").classed("finish", true);
+    else
+      d3.select("#cost_range").classed("finish", false);
   };
 }
 
+// Action begins here
 initValues();
 modelInit();
 initializeUi();
