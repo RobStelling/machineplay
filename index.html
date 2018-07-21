@@ -165,7 +165,84 @@ limitations under the License.
     <p><img src="MPStart.png" width="100%" height="100%"></p>
     <p>In the figure above we show the starting stage of the demo. The inner ring of the display is a set of colors that we will use to predict its complementary colors <dt-cite key="OxfordComplementaryColor"></dt-cite><dt-cite key="wikipediaCC"></dt-cite>. In the middle ring we show the corresponding complementary colors, for reference and control. In the outer ring we display the model predicted complementary colors, for each color in the original color set (the inner ring). In the beginning the outer ring is gray, as no color was predicted yet. When running, the outer ring will be updated with the model predicted colors, and the user will be able to compare the predictions with the reference complementary colors in the middle ring.</p>
     <p>It is possible to play with the demo using the controls below:</p>
-    <p><img src="MPControls.png" width="100%" height="100%"></p>
+    <div  id="MLPlayDemo1">
+      <table>
+        <tr>
+          <th id="startStopDemo1" class="demo" width="5%">Start</th>
+          <th class="demo">Reset</th>
+          <th class="demo">Learning Rate</th>
+          <th class="demo">Batch Size</th>
+          <th class="demo">Render interval</th>
+          <th class="demo">Step Limit</th>
+          <th class="demo">Cost Target</th>
+        </tr>
+        <tr>
+          <td>
+            <div class="tooltip">
+              <span class="tooltiptext">Starts/stops the network training</span>
+              <label class="switch demo">
+                <input id="triggerDemo1" type="checkbox">
+                <span class="slider demo round trigger"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <spah class="tooltiptext">Resets the network, looses all training but keeps parameter values</spah>
+              <label class="switch demo">
+                <input id="updateDemo1" type="checkbox" checked disabled>
+                <span class="slider demo round"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Learning Rate controls how much the weights of the network are adjusted</span>
+                <input type="range" min="0.001" max="0.759" value="0.42" step="0.001" class="rangeslider demo freeze Demo1" id="learning_rangeDemo1">
+                <span id="learning_valDemo1" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Batch size is the amount of data sent to the network per training round</span>
+                <input type="range" min="1" max="128" value="10" class="rangeslider demo freeze Demo1" id="batch_rangeDemo1">
+                <span id="batch_valDemo1" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Number of network training runs before displaying the learned colors</span>
+                <input type="range" min="1" max="50" value="5" class="rangeslider demo" id="render_rangeDemo1">
+                <span id="render_valDemo1" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Number of learning rounds before stopping</span>
+                <input type="range" min="25" max="10000" value="1000" class="rangeslider demo" id="step_rangeDemo1">
+                <span id="step_valDemo1" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Stops learning if cost is smaller than Cost Target</span>
+                <input type="range" min="0.00001" max="0.001" value="0.0005" step="0.00001" class="rangeslider demo" id="cost_rangeDemo1">
+                <span id="cost_valDemo1" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
     <p>The five sliders on the right side let the user adjust the values for:</p>
     <ul>
       <li><b>Learning Rate</b>: The learning rate of the training model. Smaller learning rates are the baby steps that may go in the right direction but will take longer to get to the right prediction, larger learning rates are big strides that may go to the right direction but will likely miss the prediction altogether, by going beyond the expected solution.</li>
@@ -174,9 +251,163 @@ limitations under the License.
       <li><b>Step Limit</b>: The number of rounds that the training will run, ranging from 25 to 10.000. If the training reaches this limit it will stop and this slider color will switch to red, to show that a step limit was reached. If the step limit is too small, the predictions won't be that good (the outer ring colors won't match the middle ring colors).</li>
       <li><b>Cost Target</b>: The cost target of the predictions, ranging from 0.00005 to 0.001. The training will stop when the cost of the predictions is smaller than the cost target, and the cost target slider will become red in consequence, as shown in the figure below. If the cost is too big, the training may not converge, if the cost is too high, the training may overfit (becoming a very good predictor of the colors it has seen, but off the mark on the colors it hasn't seen).</li>
     </ul>
-    <p><img src="MPControlsCostTarget.png" width="100%" height="100%"></p>
+    <div  id="MLPlayDemo2">
+      <table>
+        <tr>
+          <th id="startStopDemo2" class="demo" width="5%">Start</th>
+          <th class="demo">Reset</th>
+          <th class="demo">Learning Rate</th>
+          <th class="demo">Batch Size</th>
+          <th class="demo">Render interval</th>
+          <th class="demo">Step Limit</th>
+          <th class="demo">Cost Target</th>
+        </tr>
+        <tr>
+          <td>
+            <div class="tooltip">
+              <span class="tooltiptext">Starts/stops the network training</span>
+              <label class="switch demo">
+                <input id="triggerDemo2" type="checkbox">
+                <span class="slider demo round trigger"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <spah class="tooltiptext">Resets the network, looses all training but keeps parameter values</spah>
+              <label class="switch demo">
+                <input id="updateDemo2" type="checkbox" checked>
+                <span class="slider demo round"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Learning Rate controls how much the weights of the network are adjusted</span>
+                <input type="range" min="0.001" max="0.759" value="0.42" step="0.001" class="rangeslider demo freeze Demo2" id="learning_rangeDemo2" disabled>
+                <span id="learning_valDemo2" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Batch size is the amount of data sent to the network per training round</span>
+                <input type="range" min="1" max="128" value="10" class="rangeslider demo freeze Demo2" id="batch_rangeDemo2" disabled>
+                <span id="batch_valDemo2" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Number of network training runs before displaying the learned colors</span>
+                <input type="range" min="1" max="50" value="5" class="rangeslider demo" id="render_rangeDemo2">
+                <span id="render_valDemo2" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Number of learning rounds before stopping</span>
+                <input type="range" min="25" max="10000" value="1000" class="rangeslider demo" id="step_rangeDemo2">
+                <span id="step_valDemo2" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Stops learning if cost is smaller than Cost Target</span>
+                <input type="range" min="0.00001" max="0.001" value="0.0005" step="0.00001" class="rangeslider demo finish Demo2" id="cost_rangeDemo2">
+                <span id="cost_valDemo2" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
     <p>In the beginning the user can adjust any of the five sliders, choosing whatever combination he/she like. The user has to click on the start button to start the training. The colors on the outer ring will change, as the training goes on. Each new update shows the predictions of the neural network algorithm for the complementary colors at that stage of the training. The use can compare the results with the colors in the middle ring. When the training is running, the Start button becomes a red Stop button, as shown in the figure below. The user can click on the stop button to halt the model training.</p>
-    <p><img src="MPControlsRunning.png" width="100%" height="100%"></p>
+    <div  id="MLPlayDemo3">
+      <table>
+        <tr>
+          <th id="startStopDemo3" class="demo" width="5%">Stop</th>
+          <th class="demo">Reset</th>
+          <th class="demo">Learning Rate</th>
+          <th class="demo">Batch Size</th>
+          <th class="demo">Render interval</th>
+          <th class="demo">Step Limit</th>
+          <th class="demo">Cost Target</th>
+        </tr>
+        <tr>
+          <td>
+            <div class="tooltip">
+              <span class="tooltiptext">Starts/stops the network training</span>
+              <label class="switch demo">
+                <input id="triggerDemo3" type="checkbox" checked>
+                <span class="slider demo round trigger"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <spah class="tooltiptext">Resets the network, looses all training but keeps parameter values</spah>
+              <label class="switch demo">
+                <input id="updateDemo3" type="checkbox" checked disabled>
+                <span class="slider demo round"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Learning Rate controls how much the weights of the network are adjusted</span>
+                <input type="range" min="0.001" max="0.759" value="0.42" step="0.001" class="rangeslider demo freeze Demo3" id="learning_rangeDemo3" disabled>
+                <span id="learning_valDemo3" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Batch size is the amount of data sent to the network per training round</span>
+                <input type="range" min="1" max="128" value="10" class="rangeslider demo freeze Demo3" id="batch_rangeDemo3" disabled>
+                <span id="batch_valDemo3" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Number of network training runs before displaying the learned colors</span>
+                <input type="range" min="1" max="50" value="5" class="rangeslider demo" id="render_rangeDemo3">
+                <span id="render_valDemo3" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Number of learning rounds before stopping</span>
+                <input type="range" min="25" max="10000" value="1000" class="rangeslider demo" id="step_rangeDemo3">
+                <span id="step_valDemo3" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="tooltip">
+              <div class="""slidecontainer">
+                <span class="tooltiptext">Stops learning if cost is smaller than Cost Target</span>
+                <input type="range" min="0.00001" max="0.001" value="0.0005" step="0.00001" class="rangeslider demo" id="cost_rangeDemo3">
+                <span id="cost_valDemo3" class="demoDisplay"></span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
     <p>After the training starts, the user won't be able to change neither the Learning Rate nor the Batch Size, so these parameter must be wisely choosen. The training may stop for three reasons:</p>
     <ol>
       <li>The user clicked on <em>Stop</em>.</li>
@@ -545,4 +776,10 @@ limitations under the License.
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.1.0/d3-annotation.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.12.0"></script>
   <script src='tf_ccp.js'></script>
+  <script src='demoControls.js'></script>
+  <script>
+    controls("Demo1");
+    controls("Demo2");
+    controls("Demo3");
+  </script>
 </body>

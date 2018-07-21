@@ -1,3 +1,15 @@
+.demo {
+  font-size: 0.5em;
+}
+
+.demoDisplay {
+  font-size: 0.9em;
+}
+
+table .demo {
+  border-bottom: 0px;
+}
+
 /* Tooltips */
 /* Tooltip container */
 .tooltip {
@@ -92,6 +104,11 @@ td.spaced {
   height: 17px;
 }
 
+.switch.demo {
+  width: 21px;
+  height: 12px;
+}
+
 input[type=checkbox] {
   opacity: 0;
 }
@@ -121,6 +138,13 @@ input[type=checkbox] {
   transition: .4s;
 }
 
+.slider.demo:before {
+  height: 10px;
+  width: 10px;
+  left: 1px;
+  bottom: 1px;
+}
+
 input:checked + .slider {
   background-color: #2196F3;
 }
@@ -143,10 +167,22 @@ input:checked + .slider:before {
   transform: translateX(13px);
 }
 
+input:checked + .slider.demo:before {
+  -webkit-transform: translateX(9px);
+  -ms-transform: translateX(9px);
+  transform: translateX(9px);
+
+}
+
 /* Rounded sliders */
 .slider.round {
   border-radius: 17px;
 }
+
+.slider.round.demo {
+  border-radius: 12px;
+}
+
 
 .slider.round:before {
   border-radius: 50%;
@@ -154,7 +190,11 @@ input:checked + .slider:before {
 
 /* Range sliders */
 .slidecontainer {
-    width: 100%;
+  width: 100%;
+}
+
+.slidecontainer.demo {
+  width:70%;
 }
 
 .rangeslider {
@@ -167,6 +207,12 @@ input:checked + .slider:before {
     opacity: 0.7;
     -webkit-transition: .2s;
     transition: opacity .2s;
+}
+
+
+.rangeslider.demo {
+    height: 8px;
+    border-radius: 5px;
 }
 
 .rangeslider:hover {
@@ -187,12 +233,22 @@ input:checked + .slider:before {
     cursor: pointer;
 }
 
+.rangeslider.demo::-webkit-slider-thumb {
+    width: 14px;
+    height: 14px;
+}
+
 .rangeslider::-moz-range-thumb {
     width: 13px;
     height: 13px;
     border-radius: 50%;
     background: #2196F3;
     cursor: pointer;
+}
+
+.rangeslider.demo::-moz-range-thumb {
+    width: 9px;
+    height: 9px;
 }
 
 .rangeslider.finish {
