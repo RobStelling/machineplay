@@ -1,4 +1,15 @@
-function controls(suffix) {
+function controls(suffix, data) {
+
+  if (data == null)
+  	data = {
+  		learningRate: learningRate,
+  		batchSize: batchSize,
+  		runsb4Rendering: runsb4Rendering,
+  		stepLimit: stepLimit,
+  		costTarget: costTarget,
+  		step: step,
+  		cost: cost
+  	};
   // Start button
   document.getElementById("trigger"+suffix)
           .addEventListener("click", function(){
@@ -27,7 +38,7 @@ function controls(suffix) {
   // Learning rate slider
   const learningSlider = document.getElementById("learning_range"+suffix);
   const learningOutput = document.getElementById("learning_val"+suffix);
-  learningSlider.value = learningOutput.innerHTML = learningRate;
+  learningSlider.value = learningOutput.innerHTML = data.learningRate;
   
   learningSlider.oninput = function() {
     learningOutput.innerHTML = this.value;
@@ -35,7 +46,7 @@ function controls(suffix) {
   // Batch size slider
   const batchSlider = document.getElementById("batch_range"+suffix);
   const batchOuput = document.getElementById("batch_val"+suffix);
-  batchSlider.value = batchOuput.innerHTML = batchSize;
+  batchSlider.value = batchOuput.innerHTML = data.batchSize;
 
   batchSlider.oninput = function() {
     batchOuput.innerHTML = this.value;
@@ -43,7 +54,7 @@ function controls(suffix) {
   // Render interval slider
   const renderSlider = document.getElementById("render_range"+suffix);
   const renderOuput = document.getElementById("render_val"+suffix);
-  renderSlider.value = renderOuput.innerHTML = runsb4Rendering;
+  renderSlider.value = renderOuput.innerHTML = data.runsb4Rendering;
 
   renderSlider.oninput = function() {
     renderOuput.innerHTML = this.value;
@@ -51,25 +62,55 @@ function controls(suffix) {
   // Step limit slider
   const stepSlider = document.getElementById("step_range"+suffix);
   const stepOuput = document.getElementById("step_val"+suffix);
-  stepSlider.value = stepOuput.innerHTML = stepLimit;
+  stepSlider.value = stepOuput.innerHTML = data.stepLimit;
 
   stepSlider.oninput = function() {
     stepOuput.innerHTML = this.value;
-    if (stepLimit <= step)
-      d3.select("#step_range").classed("finish", true);
+    data.stepLimit = +this.value;
+    if (data.stepLimit <= data.step)
+      d3.select("#step_range"+suffix).classed("finish", true);
     else
-      d3.select("#step_range").classed("finish", false);
+      d3.select("#step_range"+suffix).classed("finish", false);
   };
   // Cost target slider
   const costSlider = document.getElementById("cost_range"+suffix);
   const costOuput = document.getElementById("cost_val"+suffix);
-  costSlider.value = costOuput.innerHTML = costTarget;
+  costSlider.value = costOuput.innerHTML = data.costTarget;
 
   costSlider.oninput = function() {
     costOuput.innerHTML = this.value;
-    if (costTarget >= cost)
-      d3.select("#cost_range").classed("finish", true);
+    data.costTarget = +this.value;
+    if (data.costTarget >= data.cost)
+      d3.select("#cost_range"+suffix).classed("finish", true);
     else
-      d3.select("#cost_range").classed("finish", false);
+      d3.select("#cost_range"+suffix).classed("finish", false);
   };
+}
+
+function svgTooltips() {
+  // SVG mouseover, mousemove and mouseout callbacks 
+  function mouseoverSVG(d) {
+    if (d3.select(this).classed("predictedDemo"))
+      tooltipSVG.html("Predicted colors");
+    else if (d3.select(this).classed("complementDemo"))
+      tooltipSVG.html("Complementary colors");
+    else
+      tooltipSVG.html("Original colors");
+    return tooltipSVG.style("visibility", "visible");
+  }
+
+  function mousemoveSVG(d) {
+    return tooltipSVG.style("top", (d3.event.pageY-20)+"px")
+      .style("left",(d3.event.pageX+25)+"px");
+  }
+
+  function mouseoutSVG(d) {
+        return tooltipSVG.style("visibility", "hidden");
+  }
+
+  // Set SVG callbacks
+  d3.selectAll(".colorDemo")
+    .on("mouseover", mouseoverSVG)
+    .on("mousemove", mousemoveSVG)
+    .on("mouseout", mouseoutSVG);
 }

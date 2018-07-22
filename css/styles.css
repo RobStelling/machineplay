@@ -10,6 +10,11 @@ table .demo {
   border-bottom: 0px;
 }
 
+.svgDemo {
+  font-size: 0.8em;
+  font-family: arial;
+}
+
 /* Tooltips */
 /* Tooltip container */
 .tooltip {

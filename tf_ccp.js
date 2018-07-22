@@ -248,7 +248,7 @@ function updateUI() {
   }
 
   // Updates outer ring of predicted colors
-  d3.selectAll(".predicted")
+  d3.select("#DLCCP").selectAll(".predicted")
       .style("fill",
         function(d){
           const originalColor = [parseInt(d.data.color.slice(1,3), 16),
@@ -260,9 +260,9 @@ function updateUI() {
          });
 
   // Deletes all temporary text
-  d3.select("svg").selectAll(".tempText").remove();
+  d3.select("#DLCCP").selectAll(".tempText").remove();
   // And create new labels
-  d3.select("svg")
+  d3.select("#DLCCP")
     .append("text")
       .attr("x", -120)
       .attr("y", -30)
@@ -271,7 +271,7 @@ function updateUI() {
       .style("fill", "black")
       // Step Count
       .text("Step "+step);
-  d3.select("svg")
+  d3.select("#DLCCP")
     .append("text")
       .attr("x", -120)
       .attr("y",  20)
@@ -280,7 +280,7 @@ function updateUI() {
       .style("fill", "black")
       // Current cost
       .text("Cost "+cost.toLocaleString("en", {maximumFractionDigits: 8}));
-    d3.select("svg")
+  d3.select("#DLCCP")
     .append("text")
       .attr("x", -120)
       .attr("y",  70)
@@ -292,7 +292,7 @@ function updateUI() {
   // Updates color labels
   d3.selectAll(".predicted")
       .each(function(d, i){
-        d3.select("svg")
+        d3.select("#DLCCP")
             .append("text")
             .attr("class", "tempText txPr")
             .append("textPath")
@@ -301,7 +301,7 @@ function updateUI() {
             .attr("dy", -10)
             .attr("dx", 95)
             .attr("text-anchor", "middle")
-            .text(function(d){return d3.select("#pr"+i).style("fill").slice(4,-1);});
+            .text(function(d){return d3.select("#DLCCP").select("#pr"+i).style("fill").slice(4,-1);});
         return false;
       });
 }
@@ -435,7 +435,8 @@ function initializeUi() {
     forbiddenColors.add(squashColor(originalColor));
   }
   // Initialize d3 elements
-  var svg = d3.select("svg");
+  d3.select("#svgWheel").append("svg").attr("id", "DLCCP");
+  var svg = d3.select("#DLCCP");
   var arc = [d3.arc().innerRadius(250).outerRadius(320),
              d3.arc().innerRadius(350).outerRadius(420),
              d3.arc().innerRadius(450).outerRadius(520)];
@@ -502,7 +503,7 @@ function initializeUi() {
   // Creates the labels for the pretidcte colors
   d3.selectAll(".predicted")
       .each(function(d, i){
-        d3.select("svg")
+        d3.select("#DLCCP")
             .append("text")
             .attr("class", "tempText txPr")
             .append("textPath")
@@ -532,7 +533,7 @@ function initializeUi() {
   }];
 
   const makeAnnotations = d3.annotation().annotations(annotations);
-  d3.select("svg").append("g").attr("class", "annotation-group").call(makeAnnotations);
+  d3.select("#DLCCP").append("g").attr("class", "annotation-group").call(makeAnnotations);
 
   // Makes the first prediction, with the model still untrained
   //updateUI();
@@ -626,18 +627,18 @@ function resetEnvironment() {
   varReset();
   // updateInterface();
   modelInit();
-  d3.selectAll(".freeze").attr("disabled", null);
+  d3.select("#MLPlay").selectAll(".freeze").attr("disabled", null);
   //document.getElementById("learning_range").disabled = false;
-  d3.selectAll(".finish").classed("finish", false);
-  d3.selectAll(".tempText").remove();
-  d3.selectAll(".predicted")
+  d3.select("#MLPlay").selectAll(".finish").classed("finish", false);
+  d3.select("#DLCCP").selectAll(".tempText").remove();
+  d3.select("#DLCCP").selectAll(".predicted")
       .style("fill", sharpRGBColor([200,200,200]))
       .attr("id", function(d, i){return "pr"+i;})
-      .attr("class", "predicted");
+      .attr("class", "predicted color");
   // Creates the labels for the pretidcte colors
-  d3.selectAll(".predicted")
+  d3.select("#DLCCP").selectAll(".predicted")
       .each(function(d, i){
-        d3.select("svg")
+        d3.select("#DLCCP")
             .append("text")
             .attr("class", "tempText txPr")
             .append("textPath")
