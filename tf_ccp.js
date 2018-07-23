@@ -472,7 +472,7 @@ function initializeUi() {
         .attr("id", function(d, i){return "pr"+i;})
         .attr("class", "predicted color");
   // Creates the labels for the original colors
-  d3.selectAll(".original")
+  svg.selectAll(".original")
     .each(function(d, i){
       svg.append("text")
           .attr("class", "txOr")
@@ -482,11 +482,11 @@ function initializeUi() {
           .attr("dy", -10)
           .attr("dx", 58)
           .attr("text-anchor", "middle")
-          .text(function(d){return d3.select("#or"+i).style("fill").slice(4,-1);});
+          .text(function(d){return d3.select("#DLCCP").select("#or"+i).style("fill").slice(4,-1);});
       return false;
     });
   // Creates the labels for the complementary colors
-  d3.selectAll(".complement")
+  svg.selectAll(".complement")
     .each(function(d, i){
       svg.append("text")
           .attr("class", "txCo")
@@ -496,12 +496,12 @@ function initializeUi() {
           .attr("dy", -10)
           .attr("dx", 78)
           .attr("text-anchor", "middle")
-          .text(function(d){return d3.select("#co"+i).style("fill").slice(4,-1);});
+          .text(function(d){return d3.select("#DLCCP").select("#co"+i).style("fill").slice(4,-1);});
       return false;
     });
 
   // Creates the labels for the pretidcte colors
-  d3.selectAll(".predicted")
+  svg.selectAll(".predicted")
       .each(function(d, i){
         d3.select("#DLCCP")
             .append("text")
@@ -512,7 +512,7 @@ function initializeUi() {
             .attr("dy", -10)
             .attr("dx", 95)
             .attr("text-anchor", "middle")
-            .text(function(d){return d3.select("#pr"+i).style("fill").slice(4,-1);});
+            .text(function(d){return d3.select("#DLCCP").select("#pr"+i).style("fill").slice(4,-1);});
         return false;
       });
 
@@ -635,7 +635,7 @@ function resetEnvironment() {
       .style("fill", sharpRGBColor([200,200,200]))
       .attr("id", function(d, i){return "pr"+i;})
       .attr("class", "predicted color");
-  // Creates the labels for the pretidcte colors
+  // Creates the labels for the predicted colors
   d3.select("#DLCCP").selectAll(".predicted")
       .each(function(d, i){
         d3.select("#DLCCP")
@@ -647,7 +647,7 @@ function resetEnvironment() {
             .attr("dy", -10)
             .attr("dx", 95)
             .attr("text-anchor", "middle")
-            .text(function(d){return d3.select("#pr"+i).style("fill").slice(4,-1);});
+            .text(function(d){return d3.select("#DLCCP").select("#pr"+i).style("fill").slice(4,-1);});
         return false;
       });
   var resetButton = document.getElementById("update");
