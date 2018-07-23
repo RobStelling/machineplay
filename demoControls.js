@@ -1,4 +1,91 @@
+
+
 function controls(suffix, data) {
+	function rgb2color(rgb) {
+		var rgbcolor = rgb.slice(4, -1).split(",");
+		return [...Array(3).keys()].map(v => +rgbcolor[v]); 
+	}
+
+	function oneMinusOne() {
+		return Math.random() > 0.5 ? 1 : -1;
+	}
+
+	function colorNoise(color) {
+		const noise = data.cost*255*(Math.random()*0.3);
+		const nColor = normalizeColor(color);
+		const noiseColor = [...Array(3).keys()].map(v => Math.min(1, Math.max(0, nColor[v]+(noise*oneMinusOne()))));
+		return denormalizeColor(noiseColor);
+	}
+
+
+	function updateMockupUI() {
+		const svgElements = d3.select("#"+suffix);
+  // Deletes all temporary text
+	  svgElements.selectAll(".tempText").remove();
+	  // And create new labels
+	  svgElements
+	    .append("text")
+	      .attr("x", -120)
+	      .attr("y", -30)
+	      .attr("class", "tempText")
+	      .attr("font-size", "36px")
+	      .style("fill", "black")
+	      // Step Count
+	      .text("Step "+data.step);
+	  svgElements
+	    .append("text")
+	      .attr("x", -120)
+	      .attr("y",  20)
+	      .attr("class", "tempText")
+	      .attr("font-size", "36px")
+	      .style("fill", "black")
+	      // Current cost
+	      .text("Cost "+data.cost.toLocaleString("en", {maximumFractionDigits: 8}));
+	  svgElements
+	    .append("text")
+	      .attr("x", -120)
+	      .attr("y",  70)
+	      .attr("class", "tempText")
+	      .attr("font-size", "36px")
+	      .style("fill", "black")
+	      // Current cost
+	      .text("Time "+data.time.toLocaleString("en", {maximumFractionDigits: 8}));
+
+	  svgElements.selectAll(".predictedDemo")
+	  	.each(function(d, i) {
+	  		color = svgElements.select("#co"+i).style("fill");
+	  		const newColor = colorNoise(rgb2color(color));
+	  		svgElements.select("#pr"+i).style("fill", sharpRGBColor(newColor));
+	  	});
+
+	  svgElements.selectAll(".predictedDemo")
+	      .each(function(d, i){
+	        svgElements
+	            .append("text")
+	            .attr("class", "tempText txPr")
+	            .append("textPath")
+	            .attr("xlink:href", "#pr"+i)
+	            .append("tspan")
+	            .attr("dy", -10)
+	            .attr("dx", 95)
+	            .attr("text-anchor", "middle")
+	            .text(function(d){return svgElements.select("#pr"+i).style("fill").slice(4,-1);});
+	        return false;
+	      });
+
+	}
+
+  function demoMockup() {
+  	if (data.run) {
+  		updateMockupUI();
+  		const duration = Math.max(1000, data.runsb4Rendering * data.batchSize);
+  		data.step += data.runsb4Rendering;
+  		data.time += duration/(1000*60);
+  		const direction = Math.random() > 0.5 ? 1 : -1;
+  		data.cost = Math.min(Math.random(), Math.max(0.0000042187, data.cost+(direction*Math.random()/data.step)));
+  		setTimeout(demoMockup, duration);
+  	}
+  }
 
   if (data == null)
   	data = {};
@@ -13,36 +100,66 @@ function controls(suffix, data) {
   if (data.costTarget == undefined)
   	data.costTarget = costTarget;
   if (data.step == undefined)
-  	data.step = step;
+  	data.step = 0;
   if (data.cost == undefined)
-  	data.cost = cost;
+  	data.cost = +Infinity;
   if (data.demo == undefined)
   	data.demo = false;
+  if (data.time == undefined)
+  	data.time = 0;
   // Start button
   document.getElementById("trigger"+suffix)
-          .addEventListener("click", function(){
-          	const startStop = document.getElementById("startStop"+suffix);
-          	if (startStop.innerText == "Start") {
-          		if (d3.select(".finish."+suffix)._groups[0][0] == null) {
-		          	d3.selectAll(".demo.freeze."+suffix).attr("disabled", "");
-		          	startStop.innerText = "Stop";
-	          		d3.select("#update"+suffix).attr("disabled", "");
-          		} else
-          			document.getElementById("trigger"+suffix).checked = false;
-          	} else {
-          		startStop.innerText = "Start";
-          		d3.select("#update"+suffix).attr("disabled", null);
-          	}
-          }, true);
+  	.addEventListener("click", function(){
+    	const startStop = document.getElementById("startStop"+suffix);
+    	if (startStop.innerText == "Start") {
+    		if (d3.select(".finish."+suffix)._groups[0][0] == null) {
+        	d3.selectAll(".demo.freeze."+suffix).attr("disabled", "");
+        	startStop.innerText = "Stop";
+      		d3.select("#update"+suffix).attr("disabled", "");
+      		if (data.demo) {
+      			data.run = true;
+      			demoMockup();
+      		}
+    		} else
+    			document.getElementById("trigger"+suffix).checked = false;
+    	} else {
+    		startStop.innerText = "Start";
+    		d3.select("#update"+suffix).attr("disabled", null);
+    		data.run = false;
+    	}
+    }, true);
   // Render button
   document.getElementById("update"+suffix)
-          .addEventListener("click", function(){
-          	d3.selectAll(".demo.freeze."+suffix).attr("disabled", null);
-          	d3.selectAll(".demo.finish."+suffix).classed("finish", false);
-          	const updateButton = document.getElementById("update"+suffix)
-          	updateButton.checked = true;
-          	updateButton.disabled = true;
-          }, true);
+	  .addEventListener("click", function(){
+	  	d3.selectAll(".demo.freeze."+suffix).attr("disabled", null);
+	  	d3.selectAll(".demo.finish."+suffix).classed("finish", false);
+	  	const updateButton = document.getElementById("update"+suffix)
+	  	updateButton.checked = true;
+	  	updateButton.disabled = true;
+	  	if (data.demo) {
+	  		data.run = false;
+	  		data.cost = +Infinity;
+	  		data.step = 0;
+	  		data.time = 0;
+	  		const demoSVG = d3.select("#"+suffix);
+	  		demoSVG.selectAll(".tempText").remove();
+	  		demoSVG.selectAll(".predictedDemo")
+	  			.style("fill", sharpRGBColor([200,200,200]))
+	    	.each(function(d, i){
+	      	demoSVG
+	        	.append("text")
+	        	.attr("class", "tempText txPr")
+	        	.append("textPath")
+	        	.attr("xlink:href", "#pr"+i)
+	        	.append("tspan")
+	        	.attr("dy", -10)
+	        	.attr("dx", 95)
+	        	.attr("text-anchor", "middle")
+	        	.text(function(d){return d3.select("#"+suffix).select("#pr"+i).style("fill").slice(4,-1);});
+	      	return false;
+	    	});
+	  	}
+	  }, true);
   // Learning rate slider
   const learningSlider = document.getElementById("learning_range"+suffix);
   const learningOutput = document.getElementById("learning_val"+suffix);
@@ -58,6 +175,7 @@ function controls(suffix, data) {
 
   batchSlider.oninput = function() {
     batchOuput.innerHTML = this.value;
+    data.batchSize = +this.value;
   };
   // Render interval slider
   const renderSlider = document.getElementById("render_range"+suffix);
@@ -66,6 +184,7 @@ function controls(suffix, data) {
 
   renderSlider.oninput = function() {
     renderOuput.innerHTML = this.value;
+    data.runsb4Rendering = +this.value;
   };
   // Step limit slider
   const stepSlider = document.getElementById("step_range"+suffix);
