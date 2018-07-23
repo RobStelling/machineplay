@@ -866,19 +866,14 @@ limitations under the License.
         stepLimit: 4200,
         costTarget: 0.00042,
         step: 252,
-        cost: 0.00035187
+        cost: 0.00035187,
+        demo: true
       });
-    controls("Demo1", null);
+    controls("Demo1");
     controls("Demo2",  {
-      learningRate: learningRate,
-      batchSize: batchSize,
-      runsb4Rendering: runsb4Rendering,
-      stepLimit: stepLimit,
-      costTarget: costTarget,
-      step: step,
-      cost: 0.00042
-    });
-    controls("Demo3", null);
+        cost: 0.00042
+      });
+    controls("Demo3");
     svgTooltips();
   </script>
 </body>

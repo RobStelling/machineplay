@@ -1,15 +1,23 @@
 function controls(suffix, data) {
 
   if (data == null)
-  	data = {
-  		learningRate: learningRate,
-  		batchSize: batchSize,
-  		runsb4Rendering: runsb4Rendering,
-  		stepLimit: stepLimit,
-  		costTarget: costTarget,
-  		step: step,
-  		cost: cost
-  	};
+  	data = {};
+  if (data.learningRate == undefined)
+	data.learningRate = learningRate;
+  if (data.batchSize == undefined)
+	data.batchSize = batchSize;
+  if (data.runsb4Rendering == undefined)
+  	data.runsb4Rendering = runsb4Rendering;
+  if (data.stepLimit == undefined)
+  	data.stepLimit = stepLimit;
+  if (data.costTarget == undefined)
+  	data.costTarget = costTarget;
+  if (data.step == undefined)
+  	data.step = step;
+  if (data.cost == undefined)
+  	data.cost = cost;
+  if (data.demo == undefined)
+  	data.demo = false;
   // Start button
   document.getElementById("trigger"+suffix)
           .addEventListener("click", function(){
