@@ -1,15 +1,18 @@
 
-
+// Controls for the mockup menus
 function controls(suffix, data) {
+  // Converts a RGB string in the format rgb(r, g, b) to a vector = [r, g, b]
 	function rgb2color(rgb) {
 		var rgbcolor = rgb.slice(4, -1).split(",");
 		return [...Array(3).keys()].map(v => +rgbcolor[v]); 
 	}
 
+  // Returns 1 or -1, the smaller the cut, the greater the probatility of return 1
 	function oneMinusOne(cut) {
 		return Math.random() > cut ? 1 : -1;
 	}
 
+  // Returns a color with some noise, uses data.cost to control the amount of noise
 	function colorNoise(color) {
 		const noise = data.cost*255*(Math.random()*0.3);
 		const nColor = normalizeColor(color);
@@ -18,6 +21,7 @@ function controls(suffix, data) {
 	}
 
 
+  // Updates a mockup interface
 	function updateMockupUI() {
 		const svgElements = d3.select("#"+suffix);
   // Deletes all temporary text
@@ -75,6 +79,7 @@ function controls(suffix, data) {
 
 	}
 
+  //
   function demoMockup() {
   	function mockupResetControls() {
   			document.getElementById("trigger"+suffix).checked = false;
@@ -95,8 +100,9 @@ function controls(suffix, data) {
 	  		const duration = Math.max(1000, data.runsb4Rendering * data.batchSize);
 	  		data.step += data.runsb4Rendering;
 	  		data.time += duration/(1000*60);
-	  		const direction = oneMinusOne(step/10000);
-	  		data.cost = Math.min(Math.random(), Math.max(0.0000042187, data.cost+(direction*Math.random()/data.step)));
+        if (data.cost == +Infinity)
+          data.cost = 0.01;
+	  		data.cost = data.cost + (data.cost * data.learningRate * oneMinusOne(1-data.learningRate));
 	  		setTimeout(demoMockup, duration);
 	  	}
   	}
@@ -182,6 +188,7 @@ function controls(suffix, data) {
   
   learningSlider.oninput = function() {
     learningOutput.innerHTML = this.value;
+    data.learningRate = +this.value;
   };
   // Batch size slider
   const batchSlider = document.getElementById("batch_range"+suffix);
@@ -229,6 +236,7 @@ function controls(suffix, data) {
   };
 }
 
+// Tooltips for SVG elements
 function svgTooltips() {
   // SVG mouseover, mousemove and mouseout callbacks 
   function mouseoverSVG(d) {
