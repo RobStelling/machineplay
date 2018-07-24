@@ -6,14 +6,14 @@ function controls(suffix, data) {
 		return [...Array(3).keys()].map(v => +rgbcolor[v]); 
 	}
 
-	function oneMinusOne() {
-		return Math.random() > 0.5 ? 1 : -1;
+	function oneMinusOne(cut) {
+		return Math.random() > cut ? 1 : -1;
 	}
 
 	function colorNoise(color) {
 		const noise = data.cost*255*(Math.random()*0.3);
 		const nColor = normalizeColor(color);
-		const noiseColor = [...Array(3).keys()].map(v => Math.min(1, Math.max(0, nColor[v]+(noise*oneMinusOne()))));
+		const noiseColor = [...Array(3).keys()].map(v => Math.min(1, Math.max(0, nColor[v]+(noise*oneMinusOne(0.5)))));
 		return denormalizeColor(noiseColor);
 	}
 
@@ -76,14 +76,29 @@ function controls(suffix, data) {
 	}
 
   function demoMockup() {
+  	function mockupResetControls() {
+  			document.getElementById("trigger"+suffix).checked = false;
+  			document.getElementById("startStop"+suffix).innerText = "Start";
+  			document.getElementById("update"+suffix).disabled = false;
+  	}
   	if (data.run) {
   		updateMockupUI();
-  		const duration = Math.max(1000, data.runsb4Rendering * data.batchSize);
-  		data.step += data.runsb4Rendering;
-  		data.time += duration/(1000*60);
-  		const direction = Math.random() > 0.5 ? 1 : -1;
-  		data.cost = Math.min(Math.random(), Math.max(0.0000042187, data.cost+(direction*Math.random()/data.step)));
-  		setTimeout(demoMockup, duration);
+  		if (data.cost <= data.costTarget) {
+  			data.run = false;
+  			d3.select("#cost_range"+suffix).classed("finish", true);
+  			mockupResetControls();
+  		} else if (data.step >= data.stepLimit) {
+  			data.run = false;
+  			d3.select("#step_range"+suffix).classed("finish", true);
+  			mockupResetControls();
+  		} else {
+	  		const duration = Math.max(1000, data.runsb4Rendering * data.batchSize);
+	  		data.step += data.runsb4Rendering;
+	  		data.time += duration/(1000*60);
+	  		const direction = oneMinusOne(step/10000);
+	  		data.cost = Math.min(Math.random(), Math.max(0.0000042187, data.cost+(direction*Math.random()/data.step)));
+	  		setTimeout(demoMockup, duration);
+	  	}
   	}
   }
 
