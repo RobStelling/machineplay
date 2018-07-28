@@ -667,7 +667,7 @@ function initValues() {
   learningRate = 42e-2;
   batchSize = 10;
   runsb4Rendering = 5;
-  epochs = 10;
+  epochs = 2;
   stepLimit = 1000;
   costTarget = 5e-4;
   forbiddenColors = new Set();
@@ -703,6 +703,15 @@ function setInterfaceHooks() {
   batchSlider.oninput = function() {
     batchOuput.innerHTML = this.value;
     batchSize = +this.value;
+  };
+  // Epochs slider
+  var epochsSlider = document.getElementById("epochs_range");
+  var epochsOuput = document.getElementById("epochs_val");
+  epochsSlider.value = epochsOuput.innerHTML = epochs;
+
+  epochsSlider.oninput = function() {
+    epochsOuput.innerHTML = this.value;
+    epochs = +this.value;
   };
   // Render interval slider
   var renderSlider = document.getElementById("render_range");

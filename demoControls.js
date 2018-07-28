@@ -14,7 +14,7 @@ function controls(suffix, data) {
 
   // Returns a color with some noise, uses data.cost to control the amount of noise
 	function colorNoise(color) {
-		const noise = data.cost*255*(Math.random()*0.3);
+		const noise = data.cost*255*(Math.random()/3);
 		const nColor = normalizeColor(color);
 		const noiseColor = [...Array(3).keys()].map(v => Math.min(1, Math.max(0, nColor[v]+(noise*oneMinusOne(0.5)))));
 		return denormalizeColor(noiseColor);
@@ -111,9 +111,11 @@ function controls(suffix, data) {
   if (data == null)
   	data = {};
   if (data.learningRate == undefined)
-	data.learningRate = learningRate;
+		data.learningRate = learningRate;
   if (data.batchSize == undefined)
-	data.batchSize = batchSize;
+		data.batchSize = batchSize;
+	if (data.epochs == undefined)
+		data.epochs = epochs;
   if (data.runsb4Rendering == undefined)
   	data.runsb4Rendering = runsb4Rendering;
   if (data.stepLimit == undefined)
@@ -199,6 +201,16 @@ function controls(suffix, data) {
     batchOuput.innerHTML = this.value;
     data.batchSize = +this.value;
   };
+  // Epochs slider
+  const epochsSlider = document.getElementById("epochs_range"+suffix);
+  const epochsOuput = document.getElementById("epochs_val"+suffix);
+  epochsSlider.value = epochsOuput.innerHTML = data.epochs;
+
+  epochsSlider.oninput = function() {
+    epochsOuput.innerHTML = this.value;
+    data.epochs = +this.value;
+  };
+
   // Render interval slider
   const renderSlider = document.getElementById("render_range"+suffix);
   const renderOuput = document.getElementById("render_val"+suffix);
