@@ -18,7 +18,7 @@ limitations under the License.
 <body>
   <script src="https://distill.pub/template.v1.js"></script>
   <script type="text/front-matter">
-    title: "Explaining neural network concepts through an interactive visualization"
+    title: "Explaining neural network training concepts through an interactive visualization"
     description: "A neural network for complementary color prediction"
     authors:
     - Roberto Stelling: http://stelling.cc/
@@ -29,11 +29,11 @@ limitations under the License.
   </script>
 
   <dt-article>
-    <h1>Explaining neural network concepts through an interactive visualization</h1>
+    <h1>Explaining neural network training concepts through an interactive visualization</h1>
     <h2>Using a neural network for complementary color prediction</h2>
     <dt-byline></dt-byline>
     <h2>Abstract</h2>
-    <p>In this article we explore interactive data visualization as a mean to help users understand a training method of a Neural Network. The visualization let the users interact with the neural network training procedure, changing parameters and viewing results as they are shown on the browser. As most machine learning and neural network methods are opaque and hard to understand by the public in general, we explore this visualization as a way to teach the techniques and concepts around neural network model training, visually exposing the behaviour of the training algorithm to the users playing with the visualization. In this article we describe one particular exploration, using the problem of predicting the complementary color of a RGB color, implemented as a neural network model.
+    <p>In this article we explore an interactive data visualization as a mean to help users understand neural network training concepts. The visualization let the users interact with the neural network training procedure, changing parameters and viewing results as they are shown on the browser. As most machine learning and neural network methods are opaque and hard to understand by the public in general, we explore this visualization as a way to teach the techniques and concepts around neural network model training, visually exposing the behaviour of the training algorithm to the users playing with the visualization, while the network is being trained. In this article we describe one particular exploration, using the problem of predicting the complementary color of a RGB color, implemented as a neural network model.
     </p>
     <h2>Motivation</h2>
     <p>
@@ -64,7 +64,10 @@ limitations under the License.
     </p>
     <p>This case was developed with knowledgeable in mind but a layperson can also explore it, as it assumes little prior knowledge of Neural Networks.</p>
     <h2>The model</h2>
-    <p>To demonstrate a real neural network in action we selected the problem of predicting a complementary color <dt-cite key="wikipediaCC"></dt-cite> <dt-cite key="OxfordComplementaryColor"></dt-cite> from the RGB <dt-cite key="wikiRGBColorModel"></dt-cite> color space. The idea was adapted from a deeplearn.js (now Tensorflow.js core<dt-cite key="tensorflowjsCore"></dt-cite>) tutorial, called Complementary Color Prediction, developed by <a href="https://twitter.com/chizeng">Chi Zeng</a>, from Google. The original tutorial was developed in TypeScript <dt-cite key="typeScript"></dt-cite> but as the library was eventually deprecated, the code, apparently, is not available anymore. Initially we've built a D3.js <dt-cite key="D3js"></dt-cite> visualization for the neural network output and corrected an small issue with activation units. Later, when deeplearn.js moved to tensorflow.js, we rewrote the whole application in JavaScript with tensorflow.js and built the demo described in this article.</p>
+    <p>To demonstrate a real neural network in action we selected the problem of predicting a complementary color <dt-cite key="wikipediaCC"></dt-cite> <dt-cite key="OxfordComplementaryColor"></dt-cite> from the RGB <dt-cite key="wikiRGBColorModel"></dt-cite> color space. The idea was adapted from a deeplearn.js (now Tensorflow.js core<dt-cite key="tensorflowjsCore"></dt-cite>) tutorial, called Complementary Color Prediction, developed by <a href="https://twitter.com/chizeng">Chi Zeng</a>, from Google. The original example was developed in TypeScript <dt-cite key="typeScript"></dt-cite> but as the library was eventually deprecated, the code, apparently, is not available anymore. Below you can see the table output of the example developed by Chi Zheng. The original code automatically triggered the neural network training and updated the table below accordingly, there was no options to initialize, ajust or tweak the network training parameters.</p>
+    <p><img src="images/originalVisual.png"></p>
+    <p>Initially we've built a D3.js <dt-cite key="D3js"></dt-cite> visualization for the neural network output and corrected an small issue with activation units. Later, when deeplearn.js moved to tensorflow.js, we rewrote the whole application in JavaScript with tensorflow.js and built the demo described in this article.</p>
+
     <h3>Why complementary colors?</h3>
     <p>The main reasons for choosing a model to predict complementary colors are:</p>
     <p>
