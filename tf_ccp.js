@@ -22,6 +22,20 @@
   */
 
 /*
+ * MOMENTUM parameter
+ * MAX_COLORS - max number of colors displayed on the color band
+ * INTERSECTION - "Overlap" for SVG "sharp gradient"
+ * COLORBAND - Height of color bands
+ * STARTCOLOR - Neutral start color
+ */
+
+const MOMENTUM = 0.9,
+      MAX_COLORS = 200,
+      INTERSECTION = 0.0002,
+      COLORBAND = 25,
+      STARTCOLOR = [200,200,200];
+
+/*
  * Model variables that can be ajusted at running time:
  * learningRate
  * batchSize
@@ -47,9 +61,10 @@ var learningRate,
     model,
     startTrainingTime,
     forbiddenColors,
-    tooltipSVG;
-
-const MOMENTUM = 0.9;
+    tooltipSVG,
+    sampleList,
+    sampledColors,
+    totalSamples;
 
 /**
  * This implementation of computing the complementary color came from an
@@ -227,6 +242,13 @@ function updateUI() {
     });
   }
 
+  function addColor(color, colorVector) {
+    if (colorVector.length == MAX_COLORS)
+      colorVector.shift();
+    colorVector.push(color);
+    return colorVector.length;
+  }
+
   if (noUpdate)
     return;
 
@@ -305,6 +327,18 @@ function updateUI() {
             .text(function(d){return svgElements.select("#pr"+i).style("fill").slice(4,-1);});
         return false;
       });
+
+  // Adds color sample bars
+  for (let i = 0; i < sampleList.length; i++) {
+    addColor(svgElements.select("#pr"+sampleList[i]).style("fill"), sampledColors[i]);
+    svgElements.select("#grad"+i).selectAll("stop").remove();
+    var stops = svgElements.select("#grad"+i).selectAll("stop").data(sampled2stops(sampledColors[i]));
+    stops.exit().remove();
+    stops.enter().append('stop')
+      .attr("offset", function(d, i){return d[0];})
+      .attr("stop-color", function(d){return d[1];})
+      .attr("stop-opacity", 1);
+  }
 }
 
 /*
@@ -403,11 +437,26 @@ function populateContainerWithColor(
   container.appendChild(colorBox);
 }
 
+// convert SampledColors to gradient stops
+function sampled2stops(sampled) {
+  var stops = [];
+  const numSamples = sampled.length;
+  var cutSize = 1 / numSamples;
+   stops.push([0, sampled[0]]);
+  stops.push([cutSize, sampled[0]]);
+   for (let i = 1; i < numSamples; i++) {
+    stops.push([(cutSize*i)+INTERSECTION, sampled[i]]);
+    stops.push([cutSize*(i+1), sampled[i]]);
+  }
+  return stops;
+}
+
 // Initialize graphical Interface
 function initializeUi() {
   // testColors will record the colors in the table,
   // to be lter used in the inner color doughnut
-  var testColors = [];
+  var testColors = [],
+      gradStops = [];
   const colorRows = document.querySelectorAll('tr[data-original-color]');
 
   // Populate table colors
@@ -469,7 +518,7 @@ function initializeUi() {
         .enter()
         .append("path")
         .attr("d", arc[2])
-        .style("fill", sharpRGBColor([200,200,200]))
+        .style("fill", sharpRGBColor(STARTCOLOR))
         .attr("id", function(d, i){return "pr"+i;})
         .attr("class", "predicted color");
   // Creates the labels for the original colors
@@ -517,6 +566,38 @@ function initializeUi() {
         return false;
       });
 
+  // Adds color sample bars
+  for (let i = 0; i < sampleList.length; i++) {
+    // Color sample band
+    svg.append("rect")
+      .style("fill", "url(#grad"+i+")")
+      .attr("class", "color sampleBand")
+      .attr("id", "pr"+sampleList[i]+"M")
+      .attr("x", -550)
+      .attr("y", 570+(COLORBAND*i))
+      .attr("width", 1050)
+      .attr("height", COLORBAND);
+    // Target color
+    svg.append("rect")
+      .style("fill", function(){return svg.select("#co"+sampleList[i]).style("fill");})
+      .attr("class", "color reference")
+      .attr("id", "co"+i+"M")
+      .attr("x", 503)
+      .attr("y", 570+(COLORBAND*i))
+      .attr("width", 50)
+      .attr("height", COLORBAND);
+     gradStops.push(sampled2stops([svg.select("#pr"+sampleList[i]).style("fill")]));
+    var gradient = svg.select("#Gdefs").append("linearGradient")
+                      .attr("id", "grad"+i)
+                      .attr("x1", "0%")
+                      .attr("x2", "100%")
+                      .attr("y1", "0%")
+                      .attr("y2", "0%");
+     gradient.selectAll("stop").data(gradStops[i]).enter().append("stop")
+      .attr("offset", function(d, i){return d[0];})
+      .attr("stop-color", function(d){return d[1];})
+      .attr("stop-opacity", 1);
+  }
 
   // Add annotations
   const annotations = [{
@@ -620,6 +701,10 @@ function varReset() {
   noUpdate = false;
   model = tf.sequential();
   startTrainingTime = null;
+  sampledColors = [];
+  for (let i = 0; i < sampleList.length; i++)
+    sampledColors.push([]);
+
 }
 
 // Reset environment before reruning
@@ -635,7 +720,7 @@ function resetEnvironment() {
   tableElements.selectAll(".finish").classed("finish", false);
   svgElements.selectAll(".tempText").remove();
   svgElements.selectAll(".predicted")
-      .style("fill", sharpRGBColor([200,200,200]))
+      .style("fill", sharpRGBColor(STARTCOLOR))
       .attr("id", function(d, i){return "pr"+i;})
       .attr("class", "predicted color");
   // Creates the labels for the predicted colors
@@ -653,6 +738,17 @@ function resetEnvironment() {
             .text(function(d){return svgElements.select("#pr"+i).style("fill").slice(4,-1);});
         return false;
       });
+  // Reset color sample bars
+  for (let i = 0; i < sampleList.length; i++) {
+    svgElements.select("#grad"+i).selectAll("stop").remove();
+    var gradStops = sampled2stops([svgElements.select("#pr"+sampleList[i]).style("fill")]);
+    var gradient = svgElements.select("#grad"+i);
+    gradient.selectAll("stop").data(gradStops).enter().append("stop")
+      .attr("offset", function(d, i){return d[0];})
+      .attr("stop-color", function(d){return d[1];})
+      .attr("stop-opacity", 1);
+  }
+
   var resetButton = document.getElementById("update");
   resetButton.disabled = true;
   resetButton.checked = true;
@@ -675,6 +771,7 @@ function initValues() {
                  .append("div")
                  .classed("svgTip", true)
                  .html("Machine Play");
+  sampleList = ["0", "5", "1", "8", "14"];
   varReset();
 }
 
@@ -755,8 +852,12 @@ function setInterfaceHooks() {
       tooltipSVG.html("Predicted colors");
     else if (d3.select(this).classed("complement"))
       tooltipSVG.html("Complementary colors");
-    else
+    else if (d3.select(this).classed("original"))
       tooltipSVG.html("Original colors");
+    else if (d3.select(this).classed("sampleBand"))
+      tooltipSVG.html("Last predictions, up to " + MAX_COLORS);
+    else
+      tooltipSVG.html("Color reference");
     return tooltipSVG.style("visibility", "visible");
   }
 
