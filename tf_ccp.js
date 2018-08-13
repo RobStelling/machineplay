@@ -492,9 +492,12 @@ function initializeUi() {
              d3.arc().innerRadius(450).outerRadius(520)];
   var pie = d3.pie().value(function(d){return d.value;}).sort(null);
   // Creates the inner color donut
-  const widthHeight = Math.min(window.innerHeight, window.innerWidth);
+  // const widthHeight = Math.min(window.innerHeight, window.innerWidth);
   // Sets SVG parameters and draws the three color donuts
-  svg.attr("width", widthHeight).attr("height", widthHeight);
+  const SVGviewBox = svg.attr("viewBox").split(" ").map(function(dim){return +dim;});
+  const factor = (window.innerHeight * 0.9) / SVGviewBox[3];
+  svg.attr("width", SVGviewBox[2]*factor).attr("height", SVGviewBox[3]*factor);
+
   svg.selectAll("original")
         .data(pie(testColors))
         .enter()
@@ -855,7 +858,7 @@ function setInterfaceHooks() {
     else if (d3.select(this).classed("original"))
       tooltipSVG.html("Original colors");
     else if (d3.select(this).classed("sampleBand"))
-      tooltipSVG.html("Last predictions, up to " + MAX_COLORS);
+      tooltipSVG.html("Latest " + MAX_COLORS +" rendered color predictions");
     else
       tooltipSVG.html("Color reference");
     return tooltipSVG.style("visibility", "visible");
