@@ -860,7 +860,7 @@ function setInterfaceHooks() {
     else if (d3.select(this).classed("sampleBand"))
       tooltipSVG.html("Latest " + MAX_COLORS +" rendered color predictions");
     else
-      tooltipSVG.html("Color reference");
+      tooltipSVG.html("Color reference (predictions should be as close to the reference as possible)");
     return tooltipSVG.style("visibility", "visible");
   }
 
