@@ -15,7 +15,7 @@ With [Machine Play](https://github.com/RobStelling/machineplay) we explore inter
 
 **Machine Play Screenshot**
 
-![Final screen](../master/MPSshot.png)
+![Final screen](/images/MPSshot.png)
 
 The inner circle displays the original RGB colors, the middle circle displays the corresponding complementary colors and the outer circle displays the predicted colors by the neural network.
 
