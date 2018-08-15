@@ -333,7 +333,7 @@ function updateUI() {
     addColor(svgElements.select("#pr"+sampleList[i]).style("fill"), sampledColors[i]);
     svgElements.select("#grad"+i).selectAll("stop").remove();
     var stops = svgElements.select("#grad"+i).selectAll("stop").data(sampled2stops(sampledColors[i]));
-    stops.exit().remove();
+    stops.exit();
     stops.enter().append('stop')
       .attr("offset", function(d, i){return d[0];})
       .attr("stop-color", function(d){return d[1];})
@@ -615,6 +615,14 @@ function initializeUi() {
     note: { label: "Predicted colors (RGB)"},
     x: 438, y: -328,
     dy: -80, dx: 45
+  },{
+    note: { label: "Latest 200 rendered color predictions"},
+    x: 300, y: 565,
+    dy: -80, dx: 65
+  },{
+    note: { label: "Color reference"},
+    x: 525, y: 565,
+    dy: -30, dx: -25
   }];
 
   const makeAnnotations = d3.annotation().annotations(annotations);
