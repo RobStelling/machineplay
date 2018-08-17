@@ -394,7 +394,6 @@ async function trainAndMaybeRender() {
     console.log(totalTime());
   }
   // Stops at a certain setpLimit or costTarget, whatever happens first
-
   if (noTrain)
     return;
   // If stepLimit was reached, finishTrainAndRendering
@@ -411,14 +410,13 @@ async function trainAndMaybeRender() {
     // Stop training
     return;
   }
-  // Schedule the next batch to be trained.
-  requestAnimationFrame(trainAndMaybeRender);
-
   // We only update the UI after runsb4Rendering steps
   for (let i = 0; i < runsb4Rendering; i++)
     await train1Batch();
-
   updateUI();
+
+  // Schedule the next batch to be trained.
+  requestAnimationFrame(trainAndMaybeRender);  
 }
 
 // Populates hidden table container with a RGB color
