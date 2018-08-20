@@ -334,10 +334,11 @@ function updateUI() {
     svgElements.select("#grad"+i).selectAll("stop").remove();
     var stops = svgElements.select("#grad"+i).selectAll("stop").data(sampled2stops(sampledColors[i]));
     stops.exit();
-    stops.enter().append('stop')
+    stops.enter().append('stop');
+    d3.select("#DLCCP").selectAll("stop")
       .attr("offset", function(d, i){return d[0];})
       .attr("stop-color", function(d){return d[1];})
-      .attr("stop-opacity", 1);
+      
   }
 }
 
@@ -604,15 +605,15 @@ function initializeUi() {
   const annotations = [{
     note: { label: "Original colors (RGB)"},
     x: 272, y: -212,
-    dy: -235, dx: 95
+    dy: -266, dx: 95
   },{
     note: { label: "Computed complementary colors (RGB)"},
     x: 425, y: -130,
-    dy: -160, dx: 55
+    dy: -146, dx: 52
   },{
     note: { label: "Predicted colors (RGB)"},
     x: 438, y: -328,
-    dy: -80, dx: 45
+    dy: -70, dx: 25
   },{
     note: { label: "Latest 200 rendered color predictions"},
     x: 300, y: 565,
