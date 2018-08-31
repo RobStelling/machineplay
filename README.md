@@ -1,4 +1,4 @@
-# Explaining neural network concepts through an interactive visualization
+# Explaining neural network training concepts through an interactive visualization
 ## Using a neural network for complementary color prediction
 <pre>
 Authors
@@ -18,5 +18,7 @@ With [Machine Play](https://github.com/RobStelling/machineplay) we explore inter
 ![Final screen](/images/MPSshot.png)
 
 The inner circle displays the original RGB colors, the middle circle displays the corresponding complementary colors and the outer circle displays the predicted colors by the neural network.
+
+The 5 bands on the lower side displays the model last 200 sampled predictions and, on the right side of the bands, the desired predicted colors as a refence.
 
 The text in the middle of the circle tells how many steps where necessary to reach the current stage, the value of the cost function and the time, in minutes, that it took for the network to reach the current stage.
