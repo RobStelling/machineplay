@@ -23,7 +23,7 @@ function controls(suffix, data) {
 
   // Updates a mockup interface
 	function updateMockupUI() {
-		const svgElements = d3.select("#"+suffix);
+		const svgElements = d3.select("#svg"+suffix);
   // Deletes all temporary text
 	  svgElements.selectAll(".tempText").remove();
 	  // And create new labels
@@ -134,7 +134,7 @@ function controls(suffix, data) {
   document.getElementById("trigger"+suffix)
   	.addEventListener("click", function(){
     	const startStop = document.getElementById("startStop"+suffix);
-    	if (startStop.innerText == "Start") {
+    	if (startStop.innerText.trim() == "Start") {
     		if (d3.select(".finish."+suffix)._groups[0][0] == null) {
         	d3.selectAll(".demo.freeze."+suffix).attr("disabled", "");
         	startStop.innerText = "Stop";
