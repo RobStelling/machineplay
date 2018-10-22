@@ -164,7 +164,7 @@ function controls(suffix, data) {
 	  		data.cost = +Infinity;
 	  		data.step = 0;
 	  		data.time = 0;
-	  		const demoSVG = d3.select("#"+suffix);
+	  		const demoSVG = d3.select("#svg"+suffix);
 	  		demoSVG.selectAll(".tempText").remove();
 	  		demoSVG.selectAll(".predictedDemo")
 	  			.style("fill", sharpRGBColor([200,200,200]))
@@ -178,7 +178,7 @@ function controls(suffix, data) {
 	        	.attr("dy", -10)
 	        	.attr("dx", 95)
 	        	.attr("text-anchor", "middle")
-	        	.text(function(d){return d3.select("#"+suffix).select("#pr"+i).style("fill").slice(4,-1);});
+	        	.text(function(d){return d3.select("#svg"+suffix).select("#pr"+i).style("fill").slice(4,-1);});
 	      	return false;
 	    	});
 	  	}
