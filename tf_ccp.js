@@ -64,7 +64,8 @@ var learningRate,
     tooltipSVG,
     sampleList,
     sampledColors,
-    totalSamples;
+    totalSamples,
+    svgID = "#DLCCP";
 
 /**
  * This implementation of computing the complementary color came from an
@@ -270,7 +271,7 @@ function updateUI() {
   }
 
   // Updates outer ring of predicted colors
-  const svgElements = d3.select("#DLCCP");
+  const svgElements = d3.select(svgID);
   svgElements.selectAll(".predicted")
       .style("fill",
         function(d){
@@ -335,7 +336,7 @@ function updateUI() {
     var stops = svgElements.select("#grad"+i).selectAll("stop").data(sampled2stops(sampledColors[i]));
     stops.exit();
     stops.enter().append('stop');
-    d3.select("#DLCCP").selectAll("stop")
+    d3.select(svgID).selectAll("stop")
       .attr("offset", function(d, i){return d[0];})
       .attr("stop-color", function(d){return d[1];})
       
@@ -485,7 +486,7 @@ function initializeUi() {
   }
   // Initialize d3 elements
   d3.select("#svgWheel").append("svg").attr("id", "DLCCP");
-  var svg = d3.select("#DLCCP");
+  var svg = d3.select(svgID);
   var arc = [d3.arc().innerRadius(250).outerRadius(320),
              d3.arc().innerRadius(350).outerRadius(420),
              d3.arc().innerRadius(450).outerRadius(520)];
@@ -720,7 +721,7 @@ function varReset() {
 // Reset environment before reruning
 function resetEnvironment() {
   const tableElements = d3.select("#MLPlay");
-  const svgElements = d3.select("#DLCCP");
+  const svgElements = d3.select(svgID);
   tf.disposeVariables();
   varReset();
   // updateInterface();
@@ -881,7 +882,7 @@ function setInterfaceHooks() {
   }
 
   // Set SVG callbacks
-  d3.selectAll(".color")
+  d3.select(svgID).selectAll(".color")
     .on("mouseover", mouseoverSVG)
     .on("mousemove", mousemoveSVG)
     .on("mouseout", mouseoutSVG);

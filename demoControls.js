@@ -1,4 +1,3 @@
-
 // Controls for the mockup menus
 function controls(suffix, data) {
   // Converts a RGB string in the format rgb(r, g, b) to a vector = [r, g, b]
@@ -249,15 +248,19 @@ function controls(suffix, data) {
 }
 
 // Tooltips for SVG elements
-function svgTooltips() {
+function svgTooltips(suffix) {
   // SVG mouseover, mousemove and mouseout callbacks 
   function mouseoverSVG(d) {
-    if (d3.select(this).classed("predictedDemo"))
-      tooltipSVG.html("Predicted colors");
-    else if (d3.select(this).classed("complementDemo"))
+    if (d3.select(this).classed("predicted"))
+      tooltipSVG.html("Predicted colors!");
+    else if (d3.select(this).classed("complement"))
       tooltipSVG.html("Complementary colors");
-    else
+    else if (d3.select(this).classed("original"))
       tooltipSVG.html("Original colors");
+    else if (d3.select(this).classed("sampleBand"))
+      tooltipSVG.html("Latest " + MAX_COLORS +" rendered color predictions");
+    else
+      tooltipSVG.html("Color reference (predictions should be as close to the reference as possible)");
     return tooltipSVG.style("visibility", "visible");
   }
 
@@ -271,7 +274,7 @@ function svgTooltips() {
   }
 
   // Set SVG callbacks
-  d3.selectAll(".colorDemo")
+  d3.select("#svg"+suffix).selectAll(".colorDemo")
     .on("mouseover", mouseoverSVG)
     .on("mousemove", mousemoveSVG)
     .on("mouseout", mouseoutSVG);
